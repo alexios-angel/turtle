@@ -67,7 +67,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
         };
   // clang-format on
   const auto &matches =
-      ctre::range<TokenRegex>(filedata);
+      ctre::search_all<TokenRegex>(filedata);
   // std::distance is not constexpr thus it does not work with ctre
   auto distance = [](const auto &first, const auto &last) {
     size_t i = 0;
