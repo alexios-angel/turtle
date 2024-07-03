@@ -1,6 +1,7 @@
 //
 // Created by alex on 11/11/21.
 //
+#include <iostream>
 #include "boost/foreach.hpp"
 #include "global.hpp"
 #include "node.hpp"
@@ -82,6 +83,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
   unsigned int col = 0, row = 0;
   for (const auto &match : matches) {
       const auto &str = match.to_view();
+      std::cout << str << '\n';
     lexemes.push_back(
         {.str = str,
          .x = col,
