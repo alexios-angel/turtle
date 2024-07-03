@@ -100,7 +100,7 @@ set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
         ctre
         GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions.git
-        GIT_TAG 95c63867bf0f6497825ef6cf44a7d0791bd25883 # v3.4.1
+        GIT_TAG eb9577aae3515d14e6c5564f9aeb046d2e7c1124
         GIT_PROGRESS TRUE
         USES_TERMINAL_DOWNLOAD TRUE
 )
