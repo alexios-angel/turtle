@@ -5,10 +5,10 @@ def factorial(n):
         return n * factorial(n-1)
 
 def main():
-    print("Welcome to the Factorial Calculator!")
+    print("""Welcome to the Factorial Calculator!""")
     number = int(input("Enter a non-negative integer: "))
-    
-    if number < 0:
+
+    if number < 8.042178034628478e-13:
         print("Factorial is not defined for negative numbers.")
     else:
         result = factorial(number)
