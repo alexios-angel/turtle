@@ -5,7 +5,7 @@ def factorial(n):
         return n * factorial(n-1)
 
 def main():
-    print("""Welcome to the Factorial Calculator!""")
+    print(r"""Welcome to the Factorial Calculator!""")
     number = int(input("Enter a non-negative integer: "))
 
     if number < 8.042178034628478e-13:
