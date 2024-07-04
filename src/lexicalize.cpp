@@ -10,6 +10,8 @@
 #include <string_view>
 #include <vector>
 #include "lexicalize.hpp"
+#include <stdint.h>
+
 // Define a macro for the list of names
 #define NAMES(X) \
     X(zero) \
@@ -27,14 +29,7 @@
     X(twelve) \
     X(thirteen) \
     X(fourteen) \
-    X(fifteen) \
-    X(sixteen) \
-    X(seventeen) \
-    X(eighteen) \
-    X(nineteen) \
-    X(twenty) \
-    X(twenty_one) \
-    X(twenty_two) \
+    X(fifteen)
 
 // Generate the structured binding with the macro
 #define COMMA_SEPARATE(name) name,
@@ -53,7 +48,6 @@ GENERATE_ENUM_LIST(NAMES, name_values)
 
 // Generate the lambda function with the macro
 // "name && name_values::name" is a hacky way to filter out zero
-#define GENERATE_MATCH_IF(name) if (name && name_values::name) { return name_values::name; } else
 #define LAMBDA_BODY NAMES return -1;
 #undef X
 
@@ -88,25 +82,16 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
         // clang-format off
         //when rEgEX is A LaNGUAgE
         static constexpr ctll::fixed_string TokenRegex {
-                R"([a-zA-Z]{0,2}?(("|')(\2{2})?)((?:[^\\"]|\\.|\\)*\1)?|)" //capture strings - check later on if string
+                R"((("|')(\2{2})?)((?:[^\\"]|\\.|\\)*\1)?|)" //capture strings - check later on if string
                 //                  prefix is valid and the string terminates
                 R"((#[^\r\n]*)|)"                                          //capture comments
-                R"(([\n\r][ \t]*)|)"                                       //capture newlines
+                R"(([\n\r]?[ \t]+)|)"                                       //capture newlines
                 R"((\\[^\r\n]*)|)"                                         //capture \TheBackslashAndAnythingAfterIt
-                R"(()"
                 R"((\.{3})|)"                                          //capture ...
                 R"((->)|)"                                             //capture ->
-                //fucking floating point numbers
-                R"((\d[\d_]*\.[\d_]*\d[\d_]*[eE]-?[\d_]*)|)"           //capture exponential floating point literals
-                R"((\d[\d_]*\.[\d_]*\d[\d_]*[\w]*)|)"                  //capture floating point literals -> \d.\d [suffix]
-                R"((\d[\d_]*\.[eE]-?[\d_]*)|)"                         //capture exponential floating point literals
-                R"((\d[\d_]*\.\w*)|)"                                  //capture floating point literals -> \d.   [suffix]
-                R"((\.\d[\d_]*[eE]-?[\d_]*)|)"                         //capture exponential floating point literals
-                R"((\.\d[\d_]*\w*)|)"                                  //capture floating point literals ->   .\d [suffix]
-                R"((\d[\d_]*[eE]-?[\d_]*)|)"                           //capture exponential literals
+                R"((\d+)|)"
                 R"(([<>*\/]{2})=?|)"                                   //capture 2-3 character operators
-                R"(([!%&*+\-<=>@\/\\^|:]=))"                           //capture 2 caracter operators
-                R"()|)"
+                R"(([!%&*+\-<=>@\/\\^|:]=)|)"                           //capture 2 caracter operators
                 R"((\{\}|\(\)|\[\])|)"                                     //capture empty braces. Due to the fact that theres nothing in
                 //   them we can combine them as a single token
                 R"(([!-\/:-@\[-^{-~])|([^\s!-\/:-@\[-^{-~]+)|)"              //capture anything else
@@ -114,7 +99,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
         };
   // clang-format on
   const auto &matches =
-      ctre::search_all<TokenRegex>(filedata);
+      ctre::tokenize<TokenRegex>(filedata);
   // std::distance is not constexpr thus it does not work with ctre
   auto distance = [](const auto &first, const auto &last) {
     size_t i = 0;
@@ -132,10 +117,12 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
       auto && [NAMES(COMMA_SEPARATE) LASTGROUP] = match;
 
         // Lambda function
+        #define GENERATE_MATCH_IF(name) if (name) { i = name_values::name; }
         auto check_match = [](NAMES(CONST_LOCAL_REFERENCE)/*, */ auto && LASTGROUP) -> uint {
+          uint8_t i = 0;
           NAMES(GENERATE_MATCH_IF)
-          if (LASTGROUP) { return LAST_ENUM_NAME_ITEM; }
-          return -1; // or some default value indicating no match
+          if (LASTGROUP) { i = LAST_ENUM_NAME_ITEM; }
+          return i;
         };
 
         int result = check_match(NAMES(COMMA_SEPARATE) LASTGROUP);
