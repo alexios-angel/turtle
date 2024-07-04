@@ -10,9 +10,8 @@
 #include <string_view>
 #include <vector>
 #include "lexicalize.hpp"
-
 // Define a macro for the list of names
-#define NAMES \
+#define NAMES(X) \
     X(zero) \
     X(one) \
     X(two) \
@@ -35,15 +34,26 @@
     X(nineteen) \
     X(twenty) \
     X(twenty_one) \
-    X(twenty_two)
+    X(twenty_two) \
 
 // Generate the structured binding with the macro
-#define X(name) name,
+#define COMMA_SEPARATE(name) name,
+#define CONST_LOCAL_REFERENCE(value) auto && value,
 #define BINDINGS NAMES
 #undef X
 
+#define GENERATE_ENUM_LIST(MACRO, NAME) \
+   enum NAME : int                      \
+   {                                    \
+      MACRO(COMMA_SEPARATE)              \
+     LAST_ENUM_NAME_ITEM                \
+   };
+
+GENERATE_ENUM_LIST(NAMES, name_values)
+
 // Generate the lambda function with the macro
-#define X(name) if (name) { return __COUNTER__ - 1; } else
+// "name && name_values::name" is a hacky way to filter out zero
+#define GENERATE_MATCH_IF(name) if (name && name_values::name) { return name_values::name; } else
 #define LAMBDA_BODY NAMES return -1;
 #undef X
 
@@ -119,47 +129,16 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
   unsigned int col = 0, row = 0;
   for (const auto &match : matches) {
       const auto &str = match.to_view();
-      auto && [zero, one, two, three, four, five,
-           six, seven, eight, nine, ten, eleven, twelve,
-           thirteen, fourteen, fifteen, sixteen, seventeen,
-           eighteen, nineteen, twenty, twenty_one,
-           twenty_two,twenty_three] = match;
+      auto && [NAMES(COMMA_SEPARATE) LASTGROUP] = match;
 
-   // Lambda function
-        auto check_match = [](const auto &zero, const auto &one, const auto &two, const auto &three, const auto &four,
-                              const auto &five, const auto &six, const auto &seven, const auto &eight, const auto &nine,
-                              const auto &ten, const auto &eleven, const auto &twelve, const auto &thirteen, const auto &fourteen,
-                              const auto &fifteen, const auto &sixteen, const auto &seventeen, const auto &eighteen, const auto &nineteen,
-                              const auto &twenty, const auto &twenty_one, const auto &twenty_two, const auto &twenty_three) {
-            if (one) { return 1; }
-            else if (two) { return 2; }
-            else if (three) { return 3; }
-            else if (four) { return 4; }
-            else if (five) { return 5; }
-            else if (six) { return 6; }
-            else if (seven) { return 7; }
-            else if (eight) { return 8; }
-            else if (nine) { return 9; }
-            else if (ten) { return 10; }
-            else if (eleven) { return 11; }
-            else if (twelve) { return 12; }
-            else if (thirteen) { return 13; }
-            else if (fourteen) { return 14; }
-            else if (fifteen) { return 15; }
-            else if (sixteen) { return 16; }
-            else if (seventeen) { return 17; }
-            else if (eighteen) { return 18; }
-            else if (nineteen) { return 19; }
-            else if (twenty) { return 20; }
-            else if (twenty_one) { return 21; }
-            else if (twenty_two) { return 22; }
-            else if (twenty_three) {return 23;}
-            return -1; // or some default value indicating no match
+        // Lambda function
+        auto check_match = [](NAMES(CONST_LOCAL_REFERENCE)/*, */ auto && LASTGROUP) -> uint {
+          NAMES(GENERATE_MATCH_IF)
+          if (LASTGROUP) { return LAST_ENUM_NAME_ITEM; }
+          return -1; // or some default value indicating no match
         };
 
-        int result = check_match(zero, one, two, three, four, five, six, seven, eight, nine,
-                                 ten, eleven, twelve, thirteen, fourteen, fifteen, sixteen, seventeen,
-                                 eighteen, nineteen, twenty, twenty_one, twenty_two, twenty_three);
+        int result = check_match(NAMES(COMMA_SEPARATE) LASTGROUP);
 
         std::cout << result << " [" << match.to_string() << "]\n";
 
