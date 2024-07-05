@@ -11,45 +11,31 @@
 #include <vector>
 #include "lexicalize.hpp"
 #include <stdint.h>
+#include <type_traits>
 
-// Define a macro for the list of names
-#define NAMES(X) \
-    X(zero) \
-    X(one) \
-    X(two) \
-    X(three) \
-    X(four) \
-    X(five) \
-    X(six) \
-    X(seven) \
-    X(eight) \
-    X(nine) \
-    X(ten) \
-    X(eleven) \
-    X(twelve) \
-    X(thirteen) \
-    X(fourteen) \
-    X(fifteen)
 
-// Generate the structured binding with the macro
-#define COMMA_SEPARATE(name) name,
-#define CONST_LOCAL_REFERENCE(value) auto && value,
-#define BINDINGS NAMES
-#undef X
+// Primary template
+template <typename... Args>
+struct RegexResultsNumberOfTemplateArgs;
 
-#define GENERATE_ENUM_LIST(MACRO, NAME) \
-   enum NAME : int                      \
-   {                                    \
-      MACRO(COMMA_SEPARATE)              \
-     LAST_ENUM_NAME_ITEM                \
-   };
+// Specialization for variadic template
+template <typename... Args>
+struct RegexResultsNumberOfTemplateArgs<const ctre::regex_results<Args...>> {
+    static constexpr std::size_t value = sizeof...(Args);
+};
 
-GENERATE_ENUM_LIST(NAMES, name_values)
-
-// Generate the lambda function with the macro
-// "name && name_values::name" is a hacky way to filter out zero
-#define LAMBDA_BODY NAMES return -1;
-#undef X
+template <size_t MaxDepth, size_t N = 1, typename Match>
+int get_matching_group(const Match& match) {
+    if constexpr (N >= MaxDepth) {
+        return -1; // No matching group found within MaxDepth
+    } else {
+        if (match.template get<N>()) {
+            return N;
+        } else {
+            return get_matching_group<MaxDepth, N + 1>(match);
+        }
+    }
+}
 
 void lexicalize(std::string &filedata, std::vector<turtle::lexeme_t> &lexemes) {
   // clang-format off
@@ -82,8 +68,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
         // clang-format off
         //when rEgEX is A LaNGUAgE
         static constexpr ctll::fixed_string TokenRegex {
-                R"((("|')(\2{2})?)((?:[^\\"]|\\.|\\)*\1)?|)" //capture strings - check later on if string
-                //                  prefix is valid and the string terminates
+                R"((?<complete_quote>(?<quotes>"|')(\g{quotes}{2})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quote})?|)" //capture strings - check later on if string
                 R"((#[^\r\n]*)|)"                                          //capture comments
                 R"(([\n\r]?[ \t]+)|)"                                       //capture newlines
                 R"((\\[^\r\n]*)|)"                                         //capture \TheBackslashAndAnythingAfterIt
@@ -114,20 +99,12 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
   unsigned int col = 0, row = 0;
   for (const auto &match : matches) {
       const auto &str = match.to_view();
-      auto && [NAMES(COMMA_SEPARATE) LASTGROUP] = match;
-
-        // Lambda function
-        #define GENERATE_MATCH_IF(name) if (name) { i = name_values::name; }
-        auto check_match = [](NAMES(CONST_LOCAL_REFERENCE)/*, */ auto && LASTGROUP) -> uint {
-          uint8_t i = 0;
-          NAMES(GENERATE_MATCH_IF)
-          if (LASTGROUP) { i = LAST_ENUM_NAME_ITEM; }
-          return i;
-        };
-
-        int result = check_match(NAMES(COMMA_SEPARATE) LASTGROUP);
-
-        std::cout << result << " [" << match.to_string() << "]\n";
+      //std::cout << result << " [" << match.to_string() << "]\n";
+      //std::cout << get_matching_group(match) << "\n";
+      //auto && [a] = match;
+      constexpr size_t num_of_vars = RegexResultsNumberOfTemplateArgs<typeof(match)>::value;
+      size_t group = get_matching_group<num_of_vars, 1>(match);
+      std::cout << group << " [" << match.to_view()<<  "]\n";
 
     lexemes.push_back(
         {.str = str,
