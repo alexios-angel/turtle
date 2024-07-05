@@ -70,6 +70,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
         static constexpr ctll::fixed_string TokenRegex {
                 R"((?<complete_quote>(?<quotes>"|')(\g{quotes}{2})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quote})?|)" //capture strings - check later on if string
                 R"((#[^\r\n]*)|)"                                          //capture comments
+                R"(([\n\r]?[ \t]+)|)"                                       //capture newlines
                 R"((\\[^\r\n]*)|)"                                         //capture \TheBackslashAndAnythingAfterIt
                 R"((\.{3})|)"                                          //capture ...
                 R"((->)|)"                                             //capture ->
@@ -78,8 +79,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
                 R"(([!%&*+\-<=>@\/\\^|:]=)|)"                           //capture 2 caracter operators
                 R"((\{\}|\(\)|\[\])|)"                                     //capture empty braces. Due to the fact that theres nothing in
                 //   them we can combine them as a single token
-                R"(([!-\/:-@\[-^{-~])|)"
-                R"(([^\s!-\/:-@\[-^{-~]+)|)"                            //capture anything else
+                R"(([!-\/:-@\[-^{-~])|([^\s!-\/:-@\[-^{-~]+)|)"              //capture anything else
                 R"((\s+))"                                                 //capture whitespace in order to keep track of position with ctre
         };
   // clang-format on
@@ -99,12 +99,17 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
   unsigned int col = 0, row = 0;
   for (const auto &match : matches) {
       const auto &str = match.to_view();
+      //std::cout << result << " [" << match.to_string() << "]\n";
+      //std::cout << get_matching_group(match) << "\n";
+      //auto && [a] = match;
       constexpr size_t num_of_vars = RegexResultsNumberOfTemplateArgs<typeof(match)>::value;
       size_t group = get_matching_group<num_of_vars, 1>(match);
       std::cout << group << " [" << match.to_view()<<  "]\n";
 
     lexemes.push_back(
         {.str = str,
-         .group = group});
+         .x = col,
+         .y = row});
+    str[0] == '\n' || str[0] == '\r' ? ++row, col = 0 : col += str.length();
   }
 }

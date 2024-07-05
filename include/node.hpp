@@ -721,7 +721,7 @@ constexpr uint_fast64_t turtleBuiltinTokenMap[][2] = {
 
 struct lexeme_t {
   std::string_view str;
-  uint_fast16_t group = 0;
+  uint_fast16_t x = 0, y = 0, group = 0;
 };
 struct node_t {
   turtle::turtle_flag_t flag = 0u;
