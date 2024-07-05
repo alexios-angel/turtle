@@ -72,8 +72,6 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
                 R"((#[^\r\n]*)|)"                                          //capture comments
                 R"(([\n\r]?[ \t]+)|)"                                       //capture newlines
                 R"((\\[^\r\n]*)|)"                                         //capture \TheBackslashAndAnythingAfterIt
-                R"((\.{3})|)"                                          //capture ...
-                R"((->)|)"                                             //capture ->
                 R"((\d+)|)"
                 R"(([<>*\/]{2})=?|)"                                   //capture 2-3 character operators
                 R"(([!%&*+\-<=>@\/\\^|:]=)|)"                           //capture 2 caracter operators
@@ -96,20 +94,14 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
 
   lexemes.reserve(distance(matches.begin(), matches.end()));
 
-  unsigned int col = 0, row = 0;
   for (const auto &match : matches) {
       const auto &str = match.to_view();
-      //std::cout << result << " [" << match.to_string() << "]\n";
-      //std::cout << get_matching_group(match) << "\n";
-      //auto && [a] = match;
       constexpr size_t num_of_vars = RegexResultsNumberOfTemplateArgs<typeof(match)>::value;
       size_t group = get_matching_group<num_of_vars, 1>(match);
       std::cout << group << " [" << match.to_view()<<  "]\n";
 
     lexemes.push_back(
         {.str = str,
-         .x = col,
-         .y = row});
-    str[0] == '\n' || str[0] == '\r' ? ++row, col = 0 : col += str.length();
+         .group = group});
   }
 }
