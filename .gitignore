@@ -47,6 +47,8 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
+vscode/
+
 # CMakeModule Cotire
 cotire/
 turtle_CXX_cotire.cmake
