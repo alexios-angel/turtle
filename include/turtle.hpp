@@ -5,9 +5,9 @@
 #ifndef TURTLE_TURTLE_H
 #define TURTLE_TURTLE_H
 
-#include <boost/filesystem.hpp>
-#include "global.hpp"
 #include "boost/program_options.hpp"
+#include "global.hpp"
+#include <boost/filesystem.hpp>
 int turtle_main(const boost::program_options::variables_map args);
 
-#endif //TURTLE_TURTLE_H
+#endif // TURTLE_TURTLE_H

@@ -26,7 +26,8 @@ inline void assertion_failed_msg(char const *expr, char const *msg,
 
 inline void assertion_failed(char const *expr, char const *function,
                              char const *file, long line) {
-  ::boost::assertion_failed_msg(expr, nullptr /*nullptr*/, function, file, line);
+  ::boost::assertion_failed_msg(expr, nullptr /*nullptr*/, function, file,
+                                line);
 }
 } // namespace boost
 
@@ -35,9 +36,10 @@ inline void assertion_failed(char const *expr, char const *function,
 void terminate_handler(void);
 
 typedef boost::error_info<struct tag_stacktrace, boost::stacktrace::stacktrace>
-        stacktrace_error_info;
+    stacktrace_error_info;
 template <class E> void BOOST_THROW(const E &e) {
-  throw boost::enable_error_info(e) << stacktrace_error_info(boost::stacktrace::stacktrace());
+  throw boost::enable_error_info(e)
+      << stacktrace_error_info(boost::stacktrace::stacktrace());
 }
 
 #endif

@@ -7,12 +7,12 @@
 
 #include "boost/program_options.hpp"
 #include "global.hpp"
-#include "turtle.hpp"
 #include "node.hpp"
+#include "turtle.hpp"
 
 namespace po = boost::program_options;
 int main(int argc = 0, char **argv = nullptr) {
-    //int a [100] = {[6] = 0};
+  // int a [100] = {[6] = 0};
   boost::log::add_console_log(std::cout,
                               boost::log::keywords::format = "%Message%");
   // Declare the supported options.
