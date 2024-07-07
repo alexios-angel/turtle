@@ -63,5 +63,6 @@ void lexicalize(std::string &filedata, std::vector<turtle::node_t> &lexemes) {
 
 void set_lex_groups(std::vector<turtle::node_t> &lexemes) {
   static constexpr std::pair<const char *, uint32_t> example_tokens[] = {
-      {"\"string\"", turtle::token::flag::Data::DATA_TYPE_STRING}};
+      {"\"string\"", turtle::token::flag::Data::DATA_TYPE_STRING},
+      {" ", turtle::token::flag::Control::WHITESPACE}};
 }

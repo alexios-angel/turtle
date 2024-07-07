@@ -154,7 +154,7 @@ template <class T> constexpr const char *flagstr(T values, turtle_flag flag) {
 namespace token {
 
 #define ENUM_NAME Control
-TURTLE_CLASS(ENUM_NAME, NULL_TOKEN, HAS_VALUE = NULL_TOKEN, NEWLINE, NL,
+TURTLE_CLASS(ENUM_NAME, NULL_TOKEN, HAS_VALUE = NULL_TOKEN, NEWLINE, WHITESPACE,
              ENDMARKER, ERROR, ERRORTOKEN, TokenError, UNSUPPORTED)
 #undef ENUM_NAME
 
@@ -283,6 +283,9 @@ TURTLE_CLASS(ENUM_NAME, CONTROL = M_typeFlagMacro(token::ENUM_NAME::CONTROL),
 #define ENUM_NAME Control
 TURTLE_CLASS(ENUM_NAME, NULL_TOKEN = 0u | flag::Type::CONTROL,
              NEWLINE = M_turtle_flag(token::ENUM_NAME::NEWLINE) |
+                       M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
+                       flag::Type::CONTROL,
+             WHITESPACE = M_turtle_flag(token::ENUM_NAME::WHITESPACE) |
                        M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
                        flag::Type::CONTROL,
              ENDMARKER = M_turtle_flag(token::ENUM_NAME::ENDMARKER) |
