@@ -21,6 +21,9 @@ If you would like to contribute you would need
 sudo apt install -y cmake clang libboost-all-dev build-essential
 ```
 ### Build instructions
+
+Clone the repository and build the project using CMake:
+
 ```Bash
 git clone https://github.com/angeletakis/turtle.git
 cd turtle
