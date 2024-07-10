@@ -1,61 +1,99 @@
-def _check_pkg(target):
-    """
-    Return name, version and if rpm package for specified target
-    """
-    ret = {}
-    cmd = ["/usr/bin/lslpp", "-Lc", target]
-    result = __salt__["cmd.run_all"](cmd, python_shell=False)
+# Single-line comment
 
-    if 0 == result["retcode"]:
-        name = ""
-        version_num = ""
-        rpmpkg = False
-        lines = result["stdout"].splitlines()
-        for line in lines:
-            if line.startswith("#"):
-                continue
+"""
+Multi-line string (can be used as a multi-line comment)
+This demonstrates the use of various token types in Python.
+"""
 
-            comps = line.split(":")
-            if len(comps) < 7:
-                raise CommandExecutionError(
-                    "Error occurred finding fileset/package",
-                    info={"errors": comps[1].strip()},
-                )
-
-            # handle first matching line
-            if "R" in comps[6]:
-                name = comps[0]
-                rpmpkg = True
-            else:
-                name = comps[1]  # use fileset rather than rpm package
-
-            version_num = comps[2]
-            break
-
-        return name, version_num, rpmpkg
+# Keywords
+def example_function(param1, param2):
+    # Function definition with parameters
+    global_var = 10  # Global variable
+    if param1 > param2:
+        result = param1 + global_var
     else:
-        raise CommandExecutionError(
-            "Error occurred finding fileset/package",
-            info={"errors": result["stderr"].strip()},
-        )
+        result = param2 - global_var
+    
+    for i in range(5):
+        print(f"Loop iteration {i}: {result}")
+    
+    try:
+        result /= param2
+    except ZeroDivisionError as e:
+        print("Error:", e)
+    finally:
+        print("Execution completed")
+    
+    return result
 
+# Variables and identifiers
+my_var = "Hello, World!"  # String literal
+another_var = 42  # Integer literal
+decimal_var = 3.14  # Floating point literal
+boolean_var = True  # Boolean literal
 
-def _is_installed_rpm(name):
-    """
-    Returns True if the rpm package is installed. Otherwise returns False.
-    """
-    cmd = ["/usr/bin/rpm", "-q", name]
-    return __salt__["cmd.retcode"](cmd) == 0
+# Data structures
+my_list = [1, 2, 3, 4, 5]  # List
+my_tuple = (1, 2, 3, 4, 5)  # Tuple
+my_set = {1, 2, 3, 4, 5}  # Set
+my_dict = {"one": 1, "two": 2, "three": 3}  # Dictionary
 
+# Function call
+result = example_function(10, 5)
 
-def _list_pkgs_from_context(versions_as_list):
-    """
-    Use pkg list from __context__
-    """
-    if versions_as_list:
-        return __context__["pkg.list_pkgs"]
-    else:
-        ret = copy.deepcopy(__context__["pkg.list_pkgs"])
-        __salt__["pkg_resource.stringify"](ret)
-        return ret
+# Class definition
+class ExampleClass:
+    # Class variable
+    class_var = "I am a class variable"
+    
+    def __init__(self, value):
+        # Instance variable
+        self.instance_var = value
+    
+    # Method
+    def display(self):
+        print(f"Instance variable: {self.instance_var}")
+        print(f"Class variable: {ExampleClass.class_var}")
+
+# Object instantiation
+example_object = ExampleClass(100)
+example_object.display()
+
+# Import statement
+import math
+
+# Using an imported module
+print("Square root of 16 is:", math.sqrt(16))
+
+# Lambda function
+square = lambda x: x ** 2
+print("Square of 5 is:", square(5))
+
+# List comprehension
+squares = [x ** 2 for x in range(10)]
+print("Squares:", squares)
+
+# Generator expression
+gen = (x ** 2 for x in range(10))
+print("Generator squares:", list(gen))
+
+# Decorators
+def decorator_function(func):
+    def wrapper(*args, **kwargs):
+        print("Function is being called")
+        return func(*args, **kwargs)
+    return wrapper
+
+@decorator_function
+def decorated_function(message):
+    print("Message:", message)
+
+decorated_function("Hello from decorated function")
+
+# Context manager
+with open("example.txt", "w") as file:
+    file.write("This is a test file.")
+
+# End of the script
+print("Script executed successfully!")
 

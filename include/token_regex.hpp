@@ -33,14 +33,10 @@ Replace regex comments with )"${1}R"( by using (\(\?#([^)]*)\))|^
         // clang-format off
         //when rEgEX is A LaNGUAgE
         static constexpr ctll::fixed_string LexRegex {
-                R"((?<complete_quote>(?<quotes>"|')(\g{quotes}{1})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quote})?|)" //capture strings - check later on if string
-                R"((#[^\r\n]*)|)"                                          //capture comments
-                R"(([\n\r]?[ \t]+)|)"                                       //capture newlines
-                R"((\\[^\r\n]*)|)"                                         //capture \TheBackslashAndAnythingAfterIt
+                R"((?<complete_quote>(?<quotes>"|')(\g{quotes}{2})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quote})?|)" //capture strings - check later on if string
+                R"(((#|\\)[^\r\n]*)|)"                                          //capture comments
                 R"((\d+)|)"
-                R"(([<>*\/]{1})=?|)"                                   //capture 2-3 character operators
-                R"(([!%&*+\-<=>@\/\\^|:]=)|)"                           //capture 1 caracter operators
-                R"((\{\}|\(\)|\[\])|)"                                     //capture empty braces. Due to the fact that theres nothing in
+                R"(([!%&*+\-<=>@\/\\^|:])|)"                           //capture 1 caracter operators
                 //   them we can combine them as a single token
                 R"(([!-\/:-@\[-^{-~])|([^\s!-\/:-@\[-^{-~]+)|)"              //capture anything else
                 R"((\s+))"                                                 //capture whitespace in order to keep track of position with ctre

@@ -1,6 +1,7 @@
 //
 // Created by alex on 11/11/21.
 //
+#include <iomanip>
 #include "lexicalize.hpp"
 #include "boost/foreach.hpp"
 #include "ctre.hpp"
@@ -56,6 +57,8 @@ void lexicalize(std::string &filedata, std::vector<turtle::node_t> &lexemes) {
         RegexResultsNumberOfTemplateArgs<typeof(match)>::value;
     size_t group = get_matching_group<num_of_vars, 1>(match);
     // std::cout << group << " [" << match.to_view()<<  "]\n";
+
+    std::cout << "Group " << std::setfill('0') << std::setw(2) << group << " {\"" << match.to_view() << "\", 0}" << "\n";
 
     lexemes.push_back({.token = {.str = str, .group = group}});
   }
