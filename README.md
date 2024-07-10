@@ -25,7 +25,7 @@ sudo apt install -y cmake clang libboost-all-dev build-essential
 Clone the repository and build the project using CMake:
 
 ```Bash
-git clone https://github.com/angeletakis/turtle.git
+git clone https://github.com/alexios-angel/turtle
 cd turtle
 cmake . -D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++
 make
