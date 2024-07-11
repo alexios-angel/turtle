@@ -19,7 +19,7 @@
 Paste into regex101.com
 Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
 
-(?<string>(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quotes})?)|(?#
+(?<string>(?<string_type>[a-zA-Z]{1,2})?(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quotes})?)|(?#
                                                            //capture strings
                                                            // prefix is valid and the string terminates
 )(?<comment>#[^\r\n]*)|(?#                                 //capture comments
@@ -50,34 +50,34 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
         // clang-format off
         //when rEgEX is A LaNGUAgE
         static constexpr ctll::fixed_string LexRegex {
-        R"((?<string>(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quotes})?)|)"
-                                                                  //capture strings
-                                                                  //                  prefix is valid and the string terminates
-        R"((?<comment>#[^\r\n]*)|)"                                           //capture comments
-        R"((?<newline>[\n\r][ \t]*)|)"                                        //capture newlines
-        R"((?<backslash>\\[^\r\n]*)|)"                                          //capture \TheBackslashAndAnythingAfterIt
-        R"((?<arithmetic>)"
-            R"((?:[!%&*+\-<=>@\/\\^|:]=?)|)"                            //capture 1 character operators
-            R"((?:[<>*\/]{1,2}=?))"                                    //capture 2-3 character operators
-        R"()|(?<data>)"
-                                                                  //fucking floating point numbers
-            R"((?:\d[\d_]*\.[\d_]*\d[\d_]*[eE]-?[\d_]*)|)"            //capture exponential floating point literals
-            R"((?:\d[\d_]*\.[\d_]*\d[\d_]*[\w]*)|)"                   //capture floating point literals -> \d.\d [suffix]
-            R"((?:\d[\d_]*\.[eE]-?[\d_]*)|)"                          //capture exponential floating point literals
-            R"((?:\d[\d_]*\.\w*)|)"                                   //capture floating point literals -> \d.   [suffix]
-            R"((?:\.\d[\d_]*[eE]-?[\d_]*)|)"                          //capture exponential floating point literals
-            R"((?:\.\d[\d_]*\w*)|)"                                   //capture floating point literals ->   .\d [suffix]
+            R"((?<string>(?<string_type>[a-zA-Z]{1,2})?(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quotes})?)|)"
+                                                                      //capture strings
+                                                                      //                  prefix is valid and the string terminates
+            R"((?<comment>#[^\r\n]*)|)"                                           //capture comments
+            R"((?<newline>[\n\r][ \t]*)|)"                                        //capture newlines
+            R"((?<backslash>\\[^\r\n]*)|)"                                          //capture \TheBackslashAndAnythingAfterIt
+            R"((?<arithmetic>)"
+                R"((?:[!%&*+\-<=>@\/\\^|:]=?)|)"                            //capture 1 character operators
+                R"((?:[<>*\/]{1,2}=?))"                                    //capture 2-3 character operators
+            R"()|(?<data>)"
+                                                                      //fucking floating point numbers
+                R"((?:\d[\d_]*\.[\d_]*\d[\d_]*[eE]-?[\d_]*)|)"            //capture exponential floating point literals
+                R"((?:\d[\d_]*\.[\d_]*\d[\d_]*[\w]*)|)"                   //capture floating point literals -> \d.\d [suffix]
+                R"((?:\d[\d_]*\.[eE]-?[\d_]*)|)"                          //capture exponential floating point literals
+                R"((?:\d[\d_]*\.\w*)|)"                                   //capture floating point literals -> \d.   [suffix]
+                R"((?:\.\d[\d_]*[eE]-?[\d_]*)|)"                          //capture exponential floating point literals
+                R"((?:\.\d[\d_]*\w*)|)"                                   //capture floating point literals ->   .\d [suffix]
 
-            R"((?:\d[\d_]*[eE]-?[\d_]*)|)"                            //capture exponential literals
-            R"((?:\d+))"
-        R"()|)"
-        R"((?<deliminar>)"
-            R"(\.{2}|)"                                              //capture ...
-            R"((?:->)|)"                                                 //capture ->
-            R"([!-\/:-@\[-^{-~])"
-        R"()|)"
-        R"((?<identifier>[^\s!-\/:-@\[-^{-~]+)|)"               //capture anything else
-        R"((?<whitespace>\s+))"                                                     //capture whitespace in order to keep track of position with ctreR"(
+                R"((?:\d[\d_]*[eE]-?[\d_]*)|)"                            //capture exponential literals
+                R"((?:\d+))"
+            R"()|)"
+            R"((?<delimiter>)"
+                R"(\.{2}|)"                                              //capture ...
+                R"((?:->)|)"                                                 //capture ->
+                R"([!-\/:-@\[-^{-~])"
+            R"()|)"
+            R"((?<identifier>[^\s!-\/:-@\[-^{-~]+)|)"               //capture anything else
+            R"((?<whitespace>\s+))"                                                     //capture whitespace in order to keep track of position with ctreR"(
         };
 // clang-format on
 
