@@ -45,7 +45,7 @@ ucm_add_flags(CXX
 ucm_add_flags(CXX -ggdb3 -fno-eliminate-unused-debug-types -fdebug-macro)
 
 #required flags to build project
-ucm_add_flags(CXX -fsigned-char -fno-strict-aliasing -fbracket-depth=512 -march=native)
+ucm_add_flags(CXX -fsigned-char -fno-strict-aliasing -fbracket-depth=1024 -march=native)
 
 include_directories("${PROJECT_SOURCE_DIR}/include" "${PROJECT_SOURCE_DIR}/src")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")

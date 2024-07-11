@@ -8,22 +8,22 @@ This demonstrates the use of various token types in Python.
 # Keywords
 def example_function(param1, param2):
     # Function definition with parameters
-    global_var = 10  # Global variable
+    global_var = 10.0  # Global variable
     if param1 > param2:
         result = param1 + global_var
     else:
         result = param2 - global_var
-    
+
     for i in range(5):
         print(f"Loop iteration {i}: {result}")
-    
+
     try:
         result /= param2
     except ZeroDivisionError as e:
         print("Error:", e)
     finally:
         print("Execution completed")
-    
+
     return result
 
 # Variables and identifiers
@@ -45,11 +45,11 @@ result = example_function(10, 5)
 class ExampleClass:
     # Class variable
     class_var = "I am a class variable"
-    
+
     def __init__(self, value):
         # Instance variable
         self.instance_var = value
-    
+
     # Method
     def display(self):
         print(f"Instance variable: {self.instance_var}")
