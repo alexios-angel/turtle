@@ -7,7 +7,6 @@
 #include "ctre.hpp"
 #include "global.hpp"
 #include "node.hpp"
-#include "token_regex.hpp"
 #include <iostream>
 #include <stdint.h>
 #include <string>
@@ -82,15 +81,9 @@ void lexicalize(std::string &filedata, std::vector<turtle::node_t> &lexemes) {
 
   const auto &matches = ctre::tokenize<LexRegex>(filedata);
   // std::distance is not constexpr thus it does not work with ctre
-  auto distance = [&](const auto &first, const auto &last) {
-    size_t i = 0;
-    for (auto it = first; it != last; ++it) {
-      ++i;
-    }
-    return i;
-  };
 
-  lexemes.reserve(distance(matches.begin(), matches.end()));
+
+  lexemes.reserve(turtle::distance(matches.begin(), matches.end()));
 
   for (const auto &match : matches) {
     const auto &str = match.to_view();

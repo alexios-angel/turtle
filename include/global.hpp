@@ -42,4 +42,13 @@ template <class E> void BOOST_THROW(const E &e) {
       << stacktrace_error_info(boost::stacktrace::stacktrace());
 }
 
+namespace turtle {
+auto distance(const auto &first, const auto &last) {
+    size_t i = 0;
+    for (auto it = first; it != last; ++it) {
+      ++i;
+    }
+    return i;
+}
+}
 #endif
