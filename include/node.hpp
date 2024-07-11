@@ -45,6 +45,7 @@
 #include <cstdint>
 #include <cstring>
 #include <string>
+#include <uchar.h>
 
 #include "global.hpp"
 
@@ -54,7 +55,7 @@
 
 namespace turtle {
 // In case I want to change it to something bigger in the future
-typedef uint64_t turtle_flag_t;
+typedef char32_t turtle_flag_t;
 
 template <class T> using turtle_vector = std::basic_string<T>;
 
@@ -114,7 +115,9 @@ consteval size_t num_of_bits_required(const size_t max) {
 
 namespace turtle::token {
 #define ENUM_NAME Type
-TURTLE_CLASS(ENUM_NAME, CONTROL,
+TURTLE_CLASS(ENUM_NAME,
+             ASCII,
+             CONTROL,
              DELIMITERS, // such as '(' or ')' or '.' or '[' or ']' ','
              ARITHMETIC,
              KEYWORD,   // any builtin type
@@ -239,12 +242,13 @@ namespace flag {
  *
  *    MSB    LSB
  *    |      |
- * #1 000...[Type of Control] - > CONTROL
- * #2 001...[Type of Delim]   - > DELIMITERS
- * #3 010...[Type of Arith]   - > ARITHMETIC
- * #4 011...[Type of Keyword] - > KEYWORD
- * #5 100...[Type of Data]    - > DATA
- * #6 101...[Numeric id]      - > IDENTIFIER
+ * #0 000...[Ascii character] - > ASCII
+ * #1 001...[Type of Control] - > CONTROL
+ * #2 010...[Type of Delim]   - > DELIMITERS
+ * #3 011...[Type of Arith]   - > ARITHMETIC
+ * #4 100...[Type of Keyword] - > KEYWORD
+ * #5 101...[Type of Data]    - > DATA
+ * #6 111...[Numeric id]      - > IDENTIFIER
  *
  * The MSB in the token flags segment will be the IDENTIFIER flag.
  * If the token is not an IDENTIFIER, The token
@@ -267,7 +271,7 @@ TURTLE_CLASS(ENUM_NAME, CONTROL = M_typeFlagMacro(token::ENUM_NAME::CONTROL),
  *   ┌──> Flag Type - Control Class Id
  *   │
  * ┌─┤┌───> Is null token
- * 00000000  00000000 00000000 00000000
+ * 00100000  00000000 00000000 00000000
  *
  *
  *
@@ -275,7 +279,7 @@ TURTLE_CLASS(ENUM_NAME, CONTROL = M_typeFlagMacro(token::ENUM_NAME::CONTROL),
  *   ┌──> Flag Type - Control Class Id
  *   │
  * ┌─┤┌───> Is not null
- * 00011111  11111111 11111111 11111111
+ * 00111111  11111111 11111111 11111111
  *     │└─────────────────────────────┴──> Amount Of whitespace
  *     └────> Is newline
  */
@@ -298,13 +302,13 @@ TURTLE_CLASS(ENUM_NAME, NULL_TOKEN = 0u | flag::Type::CONTROL,
 /*
     Any identifier Tokens are represented by a numeric id,
     To get the tokens numeric id perform
-        ( flag::IDENTIFIER XOR Node.NodeFlag )
+        ( NOT(flag::IDENTIFIER) AND Node.NodeFlag )
 
 
       ┌──> Flag Type - IDENTIFIER Class Id
       │
     ┌─┤
-    10100000  00000000 00000000 00000000
+    11100000  00000000 00000000 00000000
        └───────────────────────────────┴──> Numeric Id
 */
 
@@ -314,7 +318,7 @@ TURTLE_CLASS(ENUM_NAME, NULL_TOKEN = 0u | flag::Type::CONTROL,
       ┌──> Flag Type - DATA Class Id
       │
     ┌─┤
-    10000001  00000000 00000000 00000000
+    10100001  00000000 00000000 00000000
        ││││└──> Is string
        │││└───> Is raw string
        ││└────> Is formated string
@@ -381,7 +385,7 @@ TURTLE_CLASS(
  *   │                            ┌──> Other Deliminar tokens
  *   │                            │  ┌──> DELIMITER_BRACE token class
  * ┌─┤                          ┌─┴─┐│┌───> DELIMITER_ASSIGN operator class
- * 00100000  00000000 00000000 01111111
+ * 01000000  00000000 00000000 01111111
  *
  * DELIMITER_ASSIGN operator class:
  * Any Deliminar that has the 1st LSB flag set is a ASSIGN-ment
@@ -542,12 +546,12 @@ TURTLE_CLASS(
  *
  *   ┌─ Flag Type - ARITHMETIC Class Id
  * ┌─┤                               ┌───> ARITHMETIC_OPERATION class
- * 01000000 00000000 00000000 00000001
+ * 01100000 00000000 00000000 00000001
  *
  *
  *   ┌─ Flag Type - ARITHMETIC Class Id
  * ┌─┤                               ┌───> LOGICAL_OPERATION class
- * 01000000 00000000 00000000 00000000
+ * 01100000 00000000 00000000 00000000
  */
 #define ENUM_NAME Arithmetic
 TURTLE_CLASS(
