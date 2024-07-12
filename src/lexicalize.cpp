@@ -28,7 +28,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
 )(?<arithmetic>(?#
     )(?:[!%&*+\-<=>@\/\\^|:]=?)|(?#                        //capture 1 character operators
     )(?:[<>*\/]{1,2}=?)(?#                                 //capture 2-3 character operators
-))|(?<data>(?#
+))|(?<number>(?#
                                                            //fucking floating point numbers
     )(?:\d[\d_]*\.[\d_]*\d[\d_]*[eE]-?[\d_]*)|(?#          //capture exponential floating point literals
     )(?:\d[\d_]*\.[\d_]*\d[\d_]*[\w]*)|(?#                 //capture floating point literals -> \d.\d [suffix]
@@ -59,7 +59,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
             R"((?<arithmetic>)"
                 R"((?:[!%&*+\-<=>@\/\\^|:]=?)|)"                            //capture 1 character operators
                 R"((?:[<>*\/]{1,2}=?))"                                    //capture 2-3 character operators
-            R"()|(?<data>)"
+            R"()|(?<number>)"
                                                                       //fucking floating point numbers
                 R"((?:\d[\d_]*\.[\d_]*\d[\d_]*[eE]-?[\d_]*)|)"            //capture exponential floating point literals
                 R"((?:\d[\d_]*\.[\d_]*\d[\d_]*[\w]*)|)"                   //capture floating point literals -> \d.\d [suffix]
@@ -111,16 +111,41 @@ void lexicalize(std::string &filedata, std::vector<turtle::node_t> &lexemes) {
 
   lexemes.reserve(turtle::distance(matches.begin(), matches.end()));
 
+  turtle::turtle_flag_t flag = 0;
   for (const auto &match : matches) {
     const auto &str = match.to_view();
-    constexpr size_t num_of_vars =
-        RegexResultsNumberOfTemplateArgs<typeof(match)>::value;
-    size_t group = get_matching_group<num_of_vars, 1>(match);
+    //constexpr size_t num_of_vars =
+    //    RegexResultsNumberOfTemplateArgs<typeof(match)>::value;
+    //size_t group = get_matching_group<num_of_vars, 1>(match);
     // std::cout << group << " [" << match.to_view()<<  "]\n";
 
-    std::cout << "Group " << std::setfill('0') << std::setw(2) << group << " {\"" << match.to_view() << "\", 0}" << "\n";
+    //std::cout << "Group " << std::setfill('0') << std::setw(2) << group << " {\"" << match.to_view() << "\", 0}" << "\n";
 
-    lexemes.push_back({.token = {.str = str, .group = group}});
+    if(match.get<"string">()){
+      flag = turtle::token::flag::Data::DATA_TYPE_STRING;
+    } else if (match.get<"comment">() || match.get<"backslash">()) {
+      flag = turtle::token::flag::Data::DATA_TYPE_COMMENT;
+    } else if (match.get<"newline">()) {
+      flag = turtle::token::flag::Control::NEWLINE;
+    } else if (match.get<"number">()){
+      flag = turtle::token::flag::Data::DATA_TYPE_NUMBER;
+    } else if (match.get<"identifier">()) {
+      flag = turtle::token::flag::Type::IDENTIFIER;
+    } else if (match.get<"whitespace">()){
+      flag = turtle::token::flag::Control::WHITESPACE;
+    } else if (match.get<"arithmetic">())  {
+      flag = turtle::token::flag::Type::ARITHMETIC;
+    } else if (match.get<"delimiter">()) {
+      flag = turtle::token::flag::Type::DELIMITERS;
+    }
+
+    /*
+    if (flag == turtle::token::flag::Type::IDENTIFIER || flag == turtle::token::flag::Type::ARITHMETIC || flag == turtle::token::flag::Type::DELIMITER){
+      //std::find_if
+    }
+    */
+
+    lexemes.push_back({.flag = flag, .token = {.str = str}});
   }
 }
 /*

@@ -635,7 +635,7 @@ consteval uint_fast64_t sti(const char *str) {
  * for a safer garentee that the program will run effectively,
  * efficently, and fast
  */
-constexpr uint_fast64_t turtleBuiltinTokenMap[][2] = {
+constexpr auto turtleBuiltinTokenMap = std::to_array<std::pair<uint64_t, uint64_t>>({
     {sti(","), token::flag::Operator::DELIMITER_COMMA},
     {sti(";"), token::flag::Operator::DELIMITER_SEMICOLON},
     {sti(":"), token::flag::Operator::DELIMITER_COLON},
@@ -724,14 +724,14 @@ constexpr uint_fast64_t turtleBuiltinTokenMap[][2] = {
     {sti("break"), token::flag::Keyword::KEYWORD_BREAK},
     {sti("except"), token::flag::Keyword::KEYWORD_EXCEPT},
     {sti("in"), token::flag::Keyword::KEYWORD_IN},
-    {sti("raise"), token::flag::Keyword::KEYWORD_RAISE}};
+    {sti("raise"), token::flag::Keyword::KEYWORD_RAISE}});
 
 struct lexeme_t {
   std::string_view str;
-  uint_fast16_t x = 0, y = 0, group = 0;
+  uint_fast16_t x = 0, y = 0;
 };
 struct node_t {
-  turtle::turtle_flag_t flag = 0u;
+  turtle::turtle_flag_t flag = 0;
   turtle::lexeme_t token;
   union {
     node_t *child[2] = {nullptr, nullptr};
