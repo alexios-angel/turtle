@@ -23,7 +23,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
                                                            //capture strings
                                                            // prefix is valid and the string terminates
 )(?<comment>#[^\r\n]*)|(?#                                 //capture comments
-)(?<newline>[\n\r][ \t]*)|(?#                              //capture newlines
+)(?<newline>[\n\r](?<indent>[ \t]{1,})?)|(?#                              //capture newlines
 )(?<backslash>\\[^\r\n]*)|(?#                              //capture \TheBackslashAndAnythingAfterIt
 )(?<arithmetic>(?#
     )(?:[!%&*+\-<=>@\/\\^|:]=?)|(?#                        //capture 1 character operators
@@ -54,7 +54,7 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
                                                                       //capture strings
                                                                       //                  prefix is valid and the string terminates
             R"((?<comment>#[^\r\n]*)|)"                                           //capture comments
-            R"((?<newline>[\n\r][ \t]*)|)"                                        //capture newlines
+            R"((?<newline>[\n\r](?<indent>[ \t]{1,})?)|)"                                        //capture newlines
             R"((?<backslash>\\[^\r\n]*)|)"                                          //capture \TheBackslashAndAnythingAfterIt
             R"((?<arithmetic>)"
                 R"((?:[!%&*+\-<=>@\/\\^|:]=?)|)"                            //capture 1 character operators
@@ -103,14 +103,17 @@ int get_matching_group(const Match &match) {
   }
 }
 
-void lexicalize(std::string &filedata, turtle::turtle_vector<turtle::node_t> &lexemes) {
+void lexicalize(std::string &filedata,
+                turtle::turtle_vector<turtle::node_t> &lexemes) {
 
   const auto &matches = ctre::tokenize<LexRegex>(filedata);
   // std::distance is not constexpr thus it does not work with ctre
 
-  lexemes.reserve(turtle::distance(matches.begin(), matches.end()));
+  // Add the end marker
+  lexemes.reserve(turtle::distance(matches.begin(), matches.end()) + 1);
 
   turtle::turtle_flag_t flag = 0;
+  uint64_t prev_indent_level = 0, indent_level = 0;
   for (const auto &match : matches) {
     const auto &str = match.to_view();
     // constexpr size_t num_of_vars =
@@ -127,6 +130,23 @@ void lexicalize(std::string &filedata, turtle::turtle_vector<turtle::node_t> &le
       flag = turtle::token::flag::Data::DATA_TYPE_COMMENT;
     } else if (match.get<"newline">()) {
       flag = turtle::token::flag::Control::NEWLINE;
+      const auto &indent_match = match.get<"indent">();
+      if (indent_match) {
+        indent_level = indent_match.to_view().length();
+      } else {
+        indent_level = 0;
+      }
+
+      if (indent_level != prev_indent_level) {
+        if (prev_indent_level < indent_level) {
+          lexemes.push_back({.flag = turtle::token::flag::Control::INDENT,
+                             .token = {.str = ""}});
+        } else {
+          lexemes.push_back({.flag = turtle::token::flag::Control::DEDENT,
+                             .token = {.str = ""}});
+        }
+        prev_indent_level = indent_level;
+      }
     } else if (match.get<"number">()) {
       flag = turtle::token::flag::Data::DATA_TYPE_NUMBER;
     } else if (match.get<"identifier">()) {
@@ -158,6 +178,8 @@ void lexicalize(std::string &filedata, turtle::turtle_vector<turtle::node_t> &le
 
     lexemes.push_back({.flag = flag, .token = {.str = str}});
   }
+  lexemes.push_back(
+      {.flag = turtle::token::flag::Control::ENDMARKER, .token = {.str = ""}});
 }
 /*
 void set_lex_groups(std::vector<turtle::node_t> &lexemes) {
