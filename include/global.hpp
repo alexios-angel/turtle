@@ -44,11 +44,11 @@ template <class E> void BOOST_THROW(const E &e) {
 
 namespace turtle {
 auto distance(const auto &first, const auto &last) {
-    size_t i = 0;
-    for (auto it = first; it != last; ++it) {
-      ++i;
-    }
-    return i;
+  size_t i = 0;
+  for (auto it = first; it != last; ++it) {
+    ++i;
+  }
+  return i;
 }
-}
+} // namespace turtle
 #endif

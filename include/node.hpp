@@ -115,9 +115,7 @@ consteval size_t num_of_bits_required(const size_t max) {
 
 namespace turtle::token {
 #define ENUM_NAME Type
-TURTLE_CLASS(ENUM_NAME,
-             ASCII,
-             CONTROL,
+TURTLE_CLASS(ENUM_NAME, ASCII, CONTROL,
              DELIMITERS, // such as '(' or ')' or '.' or '[' or ']' ','
              ARITHMETIC,
              KEYWORD,   // any builtin type
@@ -134,6 +132,15 @@ constexpr auto bits_in_turtle_flag = (sizeof(turtle::turtle_flag_t) * 8);
 constexpr auto tokenTypeOffset =
     (bits_in_turtle_flag - num_of_bits_required_for_token_type);
 
+consteval turtle::turtle_flag_t maxOfTokenType(turtle::turtle_flag_t typeflag) {
+  turtle::turtle_flag_t i = 0;
+  i = ~i;
+  i <<= num_of_bits_required_for_token_type;
+  i >>= num_of_bits_required_for_token_type;
+  i |= typeflag;
+  return i;
+}
+
 CHECK_BIT_RANGE(num_of_bits_required(turtle::token::Type::NUMBER_OF_ENUMS),
                 "Too many token types");
 
@@ -143,7 +150,7 @@ namespace turtle {
 //          \/
 // std::vector<struct Node> SemanticGroups
 
-#if 0//DEBUG_CPP
+#if 0 // DEBUG_CPP
 template <class T> constexpr const char *flagstr(T values, turtle_flag flag) {
   for (const auto &v : values) {
     if (v._to_integral() == flag) {
@@ -290,12 +297,13 @@ TURTLE_CLASS(ENUM_NAME, NULL_TOKEN = 0u | flag::Type::CONTROL,
                        M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
                        flag::Type::CONTROL,
              WHITESPACE = M_turtle_flag(token::ENUM_NAME::WHITESPACE) |
-                       M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
-                       flag::Type::CONTROL,
+                          M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
+                          flag::Type::CONTROL,
              ENDMARKER = M_turtle_flag(token::ENUM_NAME::ENDMARKER) |
                          M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
                          flag::Type::CONTROL,
-             ERRORTOKEN, TokenError, UNSUPPORTED)
+             ERRORTOKEN, TokenError, UNSUPPORTED,
+             TOKENMAX = maxOfTokenType(flag::Type::CONTROL))
 #undef offset
 #undef ENUM_NAME
 
@@ -311,6 +319,10 @@ TURTLE_CLASS(ENUM_NAME, NULL_TOKEN = 0u | flag::Type::CONTROL,
     11100000  00000000 00000000 00000000
        └───────────────────────────────┴──> Numeric Id
 */
+
+#define ENUM_NAME Identifier
+TURTLE_CLASS(ENUM_NAME, TOKENMAX = maxOfTokenType(flag::Type::IDENTIFIER))
+#undef ENUM_NAME
 
 /*
 
@@ -372,7 +384,8 @@ TURTLE_CLASS(
     DATA_TYPE_OCTAL = M_turtle_flag(token::ENUM_NAME::DATA_TYPE_OCTAL) |
                       flag::ENUM_NAME::DATA_TYPE_INT,
     DATA_TYPE_BINARY = M_turtle_flag(token::ENUM_NAME::DATA_TYPE_BINARY) |
-                       flag::ENUM_NAME::DATA_TYPE_INT)
+                       flag::ENUM_NAME::DATA_TYPE_INT,
+    TOKENMAX = maxOfTokenType(flag::Type::DATA))
 #undef ENUM_NAME
 #undef DataShiftToMargin
 
@@ -491,7 +504,8 @@ TURTLE_CLASS(
                                    DELIMITER_LEFT_BRACE | DELIMITER_BRACE),
     DELIMITER_CURLY_RIGHT_BRACE = (DELIMITER_CURLY_BRACE | DELIMITER_BRACE),
     DELIMITER_CURLY_LEFT_BRACE = (DELIMITER_CURLY_BRACE | DELIMITER_LEFT_BRACE |
-                                  DELIMITER_BRACE))
+                                  DELIMITER_BRACE),
+    TOKENMAX = maxOfTokenType(flag::Type::DELIMITERS))
 
 #undef DeliminarAssignOffset_M
 #undef ENUM_NAME
@@ -531,7 +545,8 @@ TURTLE_CLASS(
     KEYWORD_BREAK = token::ENUM_NAME::KEYWORD_BREAK | flag::Type::KEYWORD,
     KEYWORD_EXCEPT = token::ENUM_NAME::KEYWORD_EXCEPT | flag::Type::KEYWORD,
     KEYWORD_IN = token::ENUM_NAME::KEYWORD_IN | flag::Type::KEYWORD,
-    KEYWORD_RAISE = token::ENUM_NAME::KEYWORD_RAISE | flag::Type::KEYWORD)
+    KEYWORD_RAISE = token::ENUM_NAME::KEYWORD_RAISE | flag::Type::KEYWORD,
+    TOKENMAX = maxOfTokenType(flag::Type::KEYWORD))
 #undef ENUM_NAME
 
 /*
@@ -612,7 +627,9 @@ TURTLE_CLASS(
          flag::ENUM_NAME::ARITHMETIC_GREATER_THAN),
 
     ARITHMETIC_LESS_THAN_EQUAL_TO = (flag::ENUM_NAME::ARITHMETIC_EQUAL_TO |
-                                     flag::ENUM_NAME::ARITHMETIC_LESS_THAN))
+                                     flag::ENUM_NAME::ARITHMETIC_LESS_THAN),
+
+    TOKENMAX = maxOfTokenType(flag::Type::ARITHMETIC))
 #undef ENUM_NAME
 } // namespace flag
 
@@ -635,96 +652,97 @@ consteval uint_fast64_t sti(const char *str) {
  * for a safer garentee that the program will run effectively,
  * efficently, and fast
  */
-constexpr auto turtleBuiltinTokenMap = std::to_array<std::pair<uint64_t, uint64_t>>({
-    {sti(","), token::flag::Operator::DELIMITER_COMMA},
-    {sti(";"), token::flag::Operator::DELIMITER_SEMICOLON},
-    {sti(":"), token::flag::Operator::DELIMITER_COLON},
-    {sti("()"), token::flag::Operator::DELIMITER_CURLY_RIGHT_BRACE},
-    {sti("("), token::flag::Operator::DELIMITER_CURVED_LEFT_BRACE},
-    {sti(")"), token::flag::Operator::DELIMITER_CURVED_RIGHT_BRACE},
-    {sti("{}"), token::flag::Operator::DELIMITER_CURLY_RIGHT_BRACE},
-    {sti("{"), token::flag::Operator::DELIMITER_CURLY_LEFT_BRACE},
-    {sti("}"), token::flag::Operator::DELIMITER_CURLY_RIGHT_BRACE},
-    {sti("[]"), token::flag::Operator::DELIMITER_CURLY_RIGHT_BRACE},
-    {sti("["), token::flag::Operator::DELIMITER_SQUARE_LEFT_BRACE},
-    {sti("]"), token::flag::Operator::DELIMITER_SQUARE_RIGHT_BRACE},
-    {sti("..."), token::flag::Operator::DELIMITER_ELLIPSIS},
-    {sti("."), token::flag::Operator::DELIMITER_PERIOD},
-    {sti("="), token::flag::Operator::DELIMITER_ASSIGN},
-    {sti("->"), token::flag::Operator::DELIMINAR_RARROW},
-    {sti(":="), token::flag::Control::UNSUPPORTED}, // NOTE -- walrus
-    {sti("@"), token::flag::Operator::DELIMITER_AT_SIGN},
-    {sti("@="), token::flag::Operator::ARITHMETIC_AT_ASSIGN},
-    {sti("+"), token::flag::Arithmetic::ARITHMETIC_ADD},
-    {sti("-"), token::flag::Arithmetic::ARITHMETIC_SUB},
-    {sti("*"), token::flag::Arithmetic::ARITHMETIC_MULL},
-    {sti("/"), token::flag::Arithmetic::ARITHMETIC_DIV},
-    {sti("%"), token::flag::Arithmetic::ARITHMETIC_MOD},
-    {sti(">"), token::flag::Arithmetic::ARITHMETIC_GREATER_THAN},
-    {sti("<"), token::flag::Arithmetic::ARITHMETIC_LESS_THAN},
-    {sti("&"), token::flag::Arithmetic::ARITHMETIC_BIT_AND},
-    {sti("|"), token::flag::Arithmetic::ARITHMETIC_BIT_OR},
-    {sti("^"), token::flag::Arithmetic::ARITHMETIC_BIT_XOR},
-    {sti("~"), token::flag::Arithmetic::ARITHMETIC_BIT_NOT},
-    {sti("!"), token::flag::Arithmetic::ARITHMETIC_NOT},
-    {sti("=="), token::flag::Arithmetic::ARITHMETIC_EQUAL_TO},
-    {sti("!="), token::flag::Arithmetic::ARITHMETIC_NOT_EQUAL},
-    {sti("//"), token::flag::Arithmetic::ARITHMETIC_FLOOR},
-    {sti("**"), token::flag::Arithmetic::ARITHMETIC_EXPONENTIAL},
-    {sti("<<"), token::flag::Arithmetic::ARITHMETIC_BIT_LEFT_SHIFT},
-    {sti(">>"), token::flag::Arithmetic::ARITHMETIC_BIT_LEFT_SHIFT},
-    {sti("+="), token::flag::Operator::ARITHMETIC_ADD_ASSIGN},
-    {sti("-="), token::flag::Operator::ARITHMETIC_SUB_ASSIGN},
-    {sti("*="), token::flag::Operator::ARITHMETIC_MULL_ASSIGN},
-    {sti("/="), token::flag::Operator::ARITHMETIC_DIV_ASSIGN},
-    {sti("%="), token::flag::Operator::ARITHMETIC_MOD_ASSIGN},
-    {sti(">="), token::flag::Arithmetic::ARITHMETIC_GREATER_THAN_EQUAL_TO},
-    {sti("<="), token::flag::Arithmetic::ARITHMETIC_LESS_THAN_EQUAL_TO},
-    {sti("//="), token::flag::Operator::ARITHMETIC_FLOOR_ASSIGN},
-    {sti("**="), token::flag::Operator::ARITHMETIC_EXPONENTIAL_ASSIGN},
-    {sti("&="), token::flag::Operator::ARITHMETIC_BIT_AND_ASSIGN},
-    {sti("|="), token::flag::Operator::ARITHMETIC_BIT_OR_ASSIGN},
-    {sti("^="), token::flag::Operator::ARITHMETIC_BIT_XOR_ASSIGN},
+constexpr auto turtleBuiltinTokenMap =
+    std::to_array<std::pair<uint64_t, uint64_t>>(
+        {{sti(","), token::flag::Operator::DELIMITER_COMMA},
+         {sti(";"), token::flag::Operator::DELIMITER_SEMICOLON},
+         {sti(":"), token::flag::Operator::DELIMITER_COLON},
+         {sti("()"), token::flag::Operator::DELIMITER_CURLY_RIGHT_BRACE},
+         {sti("("), token::flag::Operator::DELIMITER_CURVED_LEFT_BRACE},
+         {sti(")"), token::flag::Operator::DELIMITER_CURVED_RIGHT_BRACE},
+         {sti("{}"), token::flag::Operator::DELIMITER_CURLY_RIGHT_BRACE},
+         {sti("{"), token::flag::Operator::DELIMITER_CURLY_LEFT_BRACE},
+         {sti("}"), token::flag::Operator::DELIMITER_CURLY_RIGHT_BRACE},
+         {sti("[]"), token::flag::Operator::DELIMITER_CURLY_RIGHT_BRACE},
+         {sti("["), token::flag::Operator::DELIMITER_SQUARE_LEFT_BRACE},
+         {sti("]"), token::flag::Operator::DELIMITER_SQUARE_RIGHT_BRACE},
+         {sti("..."), token::flag::Operator::DELIMITER_ELLIPSIS},
+         {sti("."), token::flag::Operator::DELIMITER_PERIOD},
+         {sti("="), token::flag::Operator::DELIMITER_ASSIGN},
+         {sti("->"), token::flag::Operator::DELIMINAR_RARROW},
+         {sti(":="), token::flag::Control::UNSUPPORTED}, // NOTE -- walrus
+         {sti("@"), token::flag::Operator::DELIMITER_AT_SIGN},
+         {sti("@="), token::flag::Operator::ARITHMETIC_AT_ASSIGN},
+         {sti("+"), token::flag::Arithmetic::ARITHMETIC_ADD},
+         {sti("-"), token::flag::Arithmetic::ARITHMETIC_SUB},
+         {sti("*"), token::flag::Arithmetic::ARITHMETIC_MULL},
+         {sti("/"), token::flag::Arithmetic::ARITHMETIC_DIV},
+         {sti("%"), token::flag::Arithmetic::ARITHMETIC_MOD},
+         {sti(">"), token::flag::Arithmetic::ARITHMETIC_GREATER_THAN},
+         {sti("<"), token::flag::Arithmetic::ARITHMETIC_LESS_THAN},
+         {sti("&"), token::flag::Arithmetic::ARITHMETIC_BIT_AND},
+         {sti("|"), token::flag::Arithmetic::ARITHMETIC_BIT_OR},
+         {sti("^"), token::flag::Arithmetic::ARITHMETIC_BIT_XOR},
+         {sti("~"), token::flag::Arithmetic::ARITHMETIC_BIT_NOT},
+         {sti("!"), token::flag::Arithmetic::ARITHMETIC_NOT},
+         {sti("=="), token::flag::Arithmetic::ARITHMETIC_EQUAL_TO},
+         {sti("!="), token::flag::Arithmetic::ARITHMETIC_NOT_EQUAL},
+         {sti("//"), token::flag::Arithmetic::ARITHMETIC_FLOOR},
+         {sti("**"), token::flag::Arithmetic::ARITHMETIC_EXPONENTIAL},
+         {sti("<<"), token::flag::Arithmetic::ARITHMETIC_BIT_LEFT_SHIFT},
+         {sti(">>"), token::flag::Arithmetic::ARITHMETIC_BIT_LEFT_SHIFT},
+         {sti("+="), token::flag::Operator::ARITHMETIC_ADD_ASSIGN},
+         {sti("-="), token::flag::Operator::ARITHMETIC_SUB_ASSIGN},
+         {sti("*="), token::flag::Operator::ARITHMETIC_MULL_ASSIGN},
+         {sti("/="), token::flag::Operator::ARITHMETIC_DIV_ASSIGN},
+         {sti("%="), token::flag::Operator::ARITHMETIC_MOD_ASSIGN},
+         {sti(">="), token::flag::Arithmetic::ARITHMETIC_GREATER_THAN_EQUAL_TO},
+         {sti("<="), token::flag::Arithmetic::ARITHMETIC_LESS_THAN_EQUAL_TO},
+         {sti("//="), token::flag::Operator::ARITHMETIC_FLOOR_ASSIGN},
+         {sti("**="), token::flag::Operator::ARITHMETIC_EXPONENTIAL_ASSIGN},
+         {sti("&="), token::flag::Operator::ARITHMETIC_BIT_AND_ASSIGN},
+         {sti("|="), token::flag::Operator::ARITHMETIC_BIT_OR_ASSIGN},
+         {sti("^="), token::flag::Operator::ARITHMETIC_BIT_XOR_ASSIGN},
 
-    //"~=" operator does not exist
+         //"~=" operator does not exist
 
-    {sti("<<="), token::flag::Operator::ARITHMETIC_BIT_LEFT_SHIFT_ASSIGN},
-    {sti(">>="), token::flag::Operator::ARITHMETIC_BIT_RIGHT_SHIFT_ASSIGN},
-    {sti("async"), token::flag::Control::UNSUPPORTED},
-    {sti("await"), token::flag::Control::UNSUPPORTED},
-    {sti("False"), token::flag::Keyword::KEYWORD_FALSE},
-    {sti("True"), token::flag::Keyword::KEYWORD_TRUE},
-    {sti("class"), token::flag::Keyword::KEYWORD_CLASS},
-    {sti("finally"), token::flag::Keyword::KEYWORD_FINALLY},
-    {sti("is"), token::flag::Keyword::KEYWORD_IS},
-    {sti("return"), token::flag::Keyword::KEYWORD_RETURN},
-    {sti("None"), token::flag::Keyword::KEYWORD_NONE},
-    {sti("continue"), token::flag::Keyword::KEYWORD_CONTINUE},
-    {sti("for"), token::flag::Keyword::KEYWORD_FOR},
-    {sti("lambda"), token::flag::Keyword::KEYWORD_LAMBDA},
-    {sti("try"), token::flag::Keyword::KEYWORD_TRY},
-    {sti("def"), token::flag::Keyword::KEYWORD_DEF},
-    {sti("from"), token::flag::Keyword::KEYWORD_FROM},
-    {sti("nonlocal"), token::flag::Keyword::KEYWORD_NONLOCAL},
-    {sti("while"), token::flag::Keyword::KEYWORD_WHILE},
-    {sti("and"), token::flag::Keyword::KEYWORD_AND},
-    {sti("del"), token::flag::Keyword::KEYWORD_DEL},
-    {sti("global"), token::flag::Keyword::KEYWORD_GLOBAL},
-    {sti("not"), token::flag::Keyword::KEYWORD_NOT},
-    {sti("with"), token::flag::Keyword::KEYWORD_WITH},
-    {sti("as"), token::flag::Keyword::KEYWORD_AS},
-    {sti("elif"), token::flag::Keyword::KEYWORD_ELIF},
-    {sti("if"), token::flag::Keyword::KEYWORD_IF},
-    {sti("or"), token::flag::Keyword::KEYWORD_OR},
-    {sti("yield"), token::flag::Keyword::KEYWORD_YIELD},
-    {sti("assert"), token::flag::Keyword::KEYWORD_ASSERT},
-    {sti("else"), token::flag::Keyword::KEYWORD_ELSE},
-    {sti("import"), token::flag::Keyword::KEYWORD_IMPORT},
-    {sti("pass"), token::flag::Keyword::KEYWORD_PASS},
-    {sti("break"), token::flag::Keyword::KEYWORD_BREAK},
-    {sti("except"), token::flag::Keyword::KEYWORD_EXCEPT},
-    {sti("in"), token::flag::Keyword::KEYWORD_IN},
-    {sti("raise"), token::flag::Keyword::KEYWORD_RAISE}});
+         {sti("<<="), token::flag::Operator::ARITHMETIC_BIT_LEFT_SHIFT_ASSIGN},
+         {sti(">>="), token::flag::Operator::ARITHMETIC_BIT_RIGHT_SHIFT_ASSIGN},
+         {sti("async"), token::flag::Control::UNSUPPORTED},
+         {sti("await"), token::flag::Control::UNSUPPORTED},
+         {sti("False"), token::flag::Keyword::KEYWORD_FALSE},
+         {sti("True"), token::flag::Keyword::KEYWORD_TRUE},
+         {sti("class"), token::flag::Keyword::KEYWORD_CLASS},
+         {sti("finally"), token::flag::Keyword::KEYWORD_FINALLY},
+         {sti("is"), token::flag::Keyword::KEYWORD_IS},
+         {sti("return"), token::flag::Keyword::KEYWORD_RETURN},
+         {sti("None"), token::flag::Keyword::KEYWORD_NONE},
+         {sti("continue"), token::flag::Keyword::KEYWORD_CONTINUE},
+         {sti("for"), token::flag::Keyword::KEYWORD_FOR},
+         {sti("lambda"), token::flag::Keyword::KEYWORD_LAMBDA},
+         {sti("try"), token::flag::Keyword::KEYWORD_TRY},
+         {sti("def"), token::flag::Keyword::KEYWORD_DEF},
+         {sti("from"), token::flag::Keyword::KEYWORD_FROM},
+         {sti("nonlocal"), token::flag::Keyword::KEYWORD_NONLOCAL},
+         {sti("while"), token::flag::Keyword::KEYWORD_WHILE},
+         {sti("and"), token::flag::Keyword::KEYWORD_AND},
+         {sti("del"), token::flag::Keyword::KEYWORD_DEL},
+         {sti("global"), token::flag::Keyword::KEYWORD_GLOBAL},
+         {sti("not"), token::flag::Keyword::KEYWORD_NOT},
+         {sti("with"), token::flag::Keyword::KEYWORD_WITH},
+         {sti("as"), token::flag::Keyword::KEYWORD_AS},
+         {sti("elif"), token::flag::Keyword::KEYWORD_ELIF},
+         {sti("if"), token::flag::Keyword::KEYWORD_IF},
+         {sti("or"), token::flag::Keyword::KEYWORD_OR},
+         {sti("yield"), token::flag::Keyword::KEYWORD_YIELD},
+         {sti("assert"), token::flag::Keyword::KEYWORD_ASSERT},
+         {sti("else"), token::flag::Keyword::KEYWORD_ELSE},
+         {sti("import"), token::flag::Keyword::KEYWORD_IMPORT},
+         {sti("pass"), token::flag::Keyword::KEYWORD_PASS},
+         {sti("break"), token::flag::Keyword::KEYWORD_BREAK},
+         {sti("except"), token::flag::Keyword::KEYWORD_EXCEPT},
+         {sti("in"), token::flag::Keyword::KEYWORD_IN},
+         {sti("raise"), token::flag::Keyword::KEYWORD_RAISE}});
 
 struct lexeme_t {
   std::string_view str;
