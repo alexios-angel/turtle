@@ -1,12 +1,12 @@
 //
 // Created by alex on 11/11/21.
 //
-#include <iomanip>
 #include "lexicalize.hpp"
 #include "boost/foreach.hpp"
 #include "ctre.hpp"
 #include "global.hpp"
 #include "node.hpp"
+#include <iomanip>
 #include <iostream>
 #include <stdint.h>
 #include <string>
@@ -108,39 +108,41 @@ void lexicalize(std::string &filedata, std::vector<turtle::node_t> &lexemes) {
   const auto &matches = ctre::tokenize<LexRegex>(filedata);
   // std::distance is not constexpr thus it does not work with ctre
 
-
   lexemes.reserve(turtle::distance(matches.begin(), matches.end()));
 
   turtle::turtle_flag_t flag = 0;
   for (const auto &match : matches) {
     const auto &str = match.to_view();
-    //constexpr size_t num_of_vars =
-    //    RegexResultsNumberOfTemplateArgs<typeof(match)>::value;
-    //size_t group = get_matching_group<num_of_vars, 1>(match);
-    // std::cout << group << " [" << match.to_view()<<  "]\n";
+    // constexpr size_t num_of_vars =
+    //     RegexResultsNumberOfTemplateArgs<typeof(match)>::value;
+    // size_t group = get_matching_group<num_of_vars, 1>(match);
+    //  std::cout << group << " [" << match.to_view()<<  "]\n";
 
-    //std::cout << "Group " << std::setfill('0') << std::setw(2) << group << " {\"" << match.to_view() << "\", 0}" << "\n";
+    // std::cout << "Group " << std::setfill('0') << std::setw(2) << group << "
+    // {\"" << match.to_view() << "\", 0}" << "\n";
 
-    if(match.get<"string">()){
+    if (match.get<"string">()) {
       flag = turtle::token::flag::Data::DATA_TYPE_STRING;
     } else if (match.get<"comment">() || match.get<"backslash">()) {
       flag = turtle::token::flag::Data::DATA_TYPE_COMMENT;
     } else if (match.get<"newline">()) {
       flag = turtle::token::flag::Control::NEWLINE;
-    } else if (match.get<"number">()){
+    } else if (match.get<"number">()) {
       flag = turtle::token::flag::Data::DATA_TYPE_NUMBER;
     } else if (match.get<"identifier">()) {
       flag = turtle::token::flag::Type::IDENTIFIER;
-    } else if (match.get<"whitespace">()){
+    } else if (match.get<"whitespace">()) {
       flag = turtle::token::flag::Control::WHITESPACE;
-    } else if (match.get<"arithmetic">())  {
+    } else if (match.get<"arithmetic">()) {
       flag = turtle::token::flag::Type::ARITHMETIC;
     } else if (match.get<"delimiter">()) {
       flag = turtle::token::flag::Type::DELIMITERS;
     }
 
     /*
-    if (flag == turtle::token::flag::Type::IDENTIFIER || flag == turtle::token::flag::Type::ARITHMETIC || flag == turtle::token::flag::Type::DELIMITER){
+    if (flag == turtle::token::flag::Type::IDENTIFIER || flag ==
+    turtle::token::flag::Type::ARITHMETIC || flag ==
+    turtle::token::flag::Type::DELIMITER){
       //std::find_if
     }
     */
