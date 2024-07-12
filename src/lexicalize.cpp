@@ -103,7 +103,7 @@ int get_matching_group(const Match &match) {
   }
 }
 
-void lexicalize(std::string &filedata, std::vector<turtle::node_t> &lexemes) {
+void lexicalize(std::string &filedata, turtle::turtle_vector<turtle::node_t> &lexemes) {
 
   const auto &matches = ctre::tokenize<LexRegex>(filedata);
   // std::distance is not constexpr thus it does not work with ctre
@@ -137,15 +137,24 @@ void lexicalize(std::string &filedata, std::vector<turtle::node_t> &lexemes) {
       flag = turtle::token::flag::Type::ARITHMETIC;
     } else if (match.get<"delimiter">()) {
       flag = turtle::token::flag::Type::DELIMITERS;
+    } else {
+      flag = turtle::token::flag::Control::ERRORTOKEN;
     }
 
-    /*
-    if (flag == turtle::token::flag::Type::IDENTIFIER || flag ==
-    turtle::token::flag::Type::ARITHMETIC || flag ==
-    turtle::token::flag::Type::DELIMITER){
-      //std::find_if
+    if ((flag == turtle::token::flag::Type::IDENTIFIER ||
+         flag == turtle::token::flag::Type::ARITHMETIC ||
+         flag == turtle::token::flag::Type::DELIMITERS) &&
+        str.length() <= 8) {
+      auto it =
+          std::find_if(turtle::turtleBuiltinTokenMap.begin(),
+                       turtle::turtleBuiltinTokenMap.end(),
+                       [&](const auto &pair) { return str == pair.first; });
+      if (it != turtle::turtleBuiltinTokenMap.end()) {
+        flag = it->second;
+      } else if (!(flag == turtle::token::flag::Type::IDENTIFIER)) {
+        std::cerr << "Unknown operator " << str << std::endl;
+      }
     }
-    */
 
     lexemes.push_back({.flag = flag, .token = {.str = str}});
   }

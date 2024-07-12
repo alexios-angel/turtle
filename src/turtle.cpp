@@ -15,7 +15,7 @@ int turtle_main(const boost::program_options::variables_map args) {
     return 1;
   }
   std::string filedata;
-  std::vector<turtle::node_t> lexemes;
+  turtle::turtle_vector<turtle::node_t> lexemes;
   boost::filesystem::load_string_file(file, filedata);
   lexicalize(filedata, lexemes);
   return 0;
