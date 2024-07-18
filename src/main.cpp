@@ -10,30 +10,36 @@
 #include "node.hpp"
 #include "turtle.hpp"
 
-namespace po = boost::program_options;
-int main(int argc = 0, char **argv = nullptr) {
-  // int a [100] = {[6] = 0};
-  boost::log::add_console_log(std::cout,
-                              boost::log::keywords::format = "%Message%");
-  // Declare the supported options.
-  // clang-format off
-  po::options_description desc("Allowed options");
-  desc.add_options()
-  ("help,h", po::bool_switch(), "produce help message")
-  ("file,f", po::value<std::string>()->default_value("main.py"),  "filename to transcompile");
-  // clang-format on
+int main(int argc, char **argv) {
+    namespace po = boost::program_options;
+    // Initialize logging
+    boost::log::add_console_log(std::cout, boost::log::keywords::format = "%Message%");
 
-  po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, desc), vm);
-  po::notify(vm);
+    // Declare the supported options
+    po::options_description desc("Allowed options");
+    desc.add_options()
+        ("help,h", po::bool_switch(), "produce help message")
+        ("file,f", po::value<std::string>()->default_value("main.py"), "filename to transcompile")
+        ("action,a", po::value<std::string>()->default_value("generate"), "action to perform")
+        ("type,t", po::value<std::string>()->default_value("grammar"), "type of item to generate")
+        ("language,l", po::value<std::string>(), "language for grammar");
 
-  if (vm["help"].as<bool>()) {
-    boost::filesystem::path program_path{argv[0]};
-    auto progam_name = boost::filesystem::basename(program_path);
-    LOG(info) << progam_name << " <arg> <filename>";
-    LOG(info) << desc << "\n";
-    return 0;
-  }
+    po::variables_map vm;
+    po::store(po::parse_command_line(argc, argv, desc), vm);
+    po::notify(vm);
 
-  return turtle_main(vm);
+    if (vm["help"].as<bool>()) {
+        boost::filesystem::path program_path{argv[0]};
+        auto program_name = boost::filesystem::basename(program_path);
+        BOOST_LOG_TRIVIAL(info) << program_name << " <arg> <filename>";
+        BOOST_LOG_TRIVIAL(info) << desc;
+        return 0;
+    }
+
+    if (!vm.count("language")) {
+        BOOST_LOG_TRIVIAL(error) << "Language must be specified.";
+        return 1;
+    }
+
+    return turtle_main(vm);
 }
