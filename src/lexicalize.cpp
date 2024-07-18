@@ -19,10 +19,10 @@
 Paste into regex101.com
 Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
 
-(?<string>(?<string_type>[a-zA-Z]{1,2})?(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quotes})?)|(?#
+(?<comment>#[^\r\n]*)|(?#                                 //capture comments
+)(?<string>(?<string_type>[a-zA-Z]{1,2})?(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"']|\\.|\\)*\g{complete_quotes})?)|(?#
                                                            //capture strings
                                                            // prefix is valid and the string terminates
-)(?<comment>#[^\r\n]*)|(?#                                 //capture comments
 )(?<newline>[\n\r](?<indent>[ \t]{1,})?)|(?#                              //capture newlines
 )(?<backslash>\\[^\r\n]*)|(?#                              //capture \TheBackslashAndAnythingAfterIt
 )(?<arithmetic>(?#
@@ -50,10 +50,10 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
         // clang-format off
         //when rEgEX is A LaNGUAgE
         static constexpr ctll::fixed_string LexRegex {
-            R"((?<string>(?<string_type>[a-zA-Z]{1,2})?(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"]|\\.|\\)*\g{complete_quotes})?)|)"
+            R"((?<comment>#[^\r\n]*)|)"                                           //capture comments
+            R"((?<string>(?<string_type>[a-zA-Z]{1,2})?(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"']|\\.|\\)*\g{complete_quotes})?)|)"
                                                                       //capture strings
                                                                       //                  prefix is valid and the string terminates
-            R"((?<comment>#[^\r\n]*)|)"                                           //capture comments
             R"((?<newline>[\n\r](?<indent>[ \t]{1,})?)|)"                                        //capture newlines
             R"((?<backslash>\\[^\r\n]*)|)"                                          //capture \TheBackslashAndAnythingAfterIt
             R"((?<arithmetic>)"

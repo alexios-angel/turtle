@@ -7,6 +7,7 @@
 #include "global.hpp"
 #include "lexicalize.hpp"
 #include "node.hpp"
+#include "syntax.hpp"
 
 int turtle_main(const boost::program_options::variables_map args) {
   const boost::filesystem::path file = args["file"].as<std::string>();
