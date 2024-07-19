@@ -4,9 +4,6 @@
 [submodule "cmake/ucm"]
 	path = cmake/ucm
 	url = https://github.com/onqtam/ucm
-[submodule "cmake/--force"]
-	path = cmake/--force
-	url = https://github.com/sakra/cotire
 [submodule "cmake/cotire"]
 	path = cmake/cotire
 	url = https://github.com/sakra/cotire
