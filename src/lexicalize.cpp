@@ -14,8 +14,6 @@
 #include <type_traits>
 #include <vector>
 
-namespace turtle::lang::python {
-
 // clang-format off
 /*
 Paste into regex101.com
@@ -183,8 +181,6 @@ void lexicalize(std::string &filedata,
   lexemes.push_back(
       {.flag = turtle::token::flag::Control::ENDMARKER, .token = {.str = ""}});
 }
-
-} // namespace turtle::lang::python
 /*
 void set_lex_groups(std::vector<turtle::node_t> &lexemes) {
   static constexpr std::pair<const char *, uint32_t> example_tokens[] = {

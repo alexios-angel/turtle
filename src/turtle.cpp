@@ -23,6 +23,13 @@ int turtle_main(const boost::program_options::variables_map vm) {
   turtle::turtle_vector<turtle::node_t> lexemes;
   std::string filedata;
   boost::filesystem::load_string_file(file, filedata);
-  turtle::lang::python::lexicalize(filedata, lexemes);
+  if(language == "python"){
+    turtle::lang::python::lexicalize(filedata, lexemes);
+  } else if (language == "antlr"){
+    std::cout << "antlr logic\n";
+  } else {
+    BOOST_LOG_TRIVIAL(error) << "Unknown language " << language << "\n";
+    return 1;
+  }
   return 0;
 }
