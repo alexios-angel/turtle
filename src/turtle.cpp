@@ -5,7 +5,7 @@
 
 #include "boost/program_options.hpp"
 #include "global.hpp"
-#include "lexicalize.hpp"
+#include "python/lexicalize.hpp"
 #include "node.hpp"
 #include "syntax.hpp"
 
@@ -23,6 +23,6 @@ int turtle_main(const boost::program_options::variables_map vm) {
   turtle::turtle_vector<turtle::node_t> lexemes;
   std::string filedata;
   boost::filesystem::load_string_file(file, filedata);
-  lexicalize(filedata, lexemes);
+  turtle::lang::python::lexicalize(filedata, lexemes);
   return 0;
 }

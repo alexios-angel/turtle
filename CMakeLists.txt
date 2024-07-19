@@ -124,12 +124,11 @@ endif ()
 add_executable(${PROJECT_NAME}
         src/main.cpp
         src/global.cpp
-        src/lexicalize.cpp
         src/turtle.cpp
-        src/node.cpp
+        src/python/lexicalize.cpp
 
         include/global.hpp
-        include/lexicalize.hpp
+        include/python/lexicalize.hpp
         include/turtle.hpp
         include/node.hpp)
 
