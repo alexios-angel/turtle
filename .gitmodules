@@ -1,3 +1,12 @@
 [submodule "resources/grammars-v4"]
 	path = resources/grammars-v4
 	url = https://github.com/antlr/grammars-v4
+[submodule "cmake/ucm"]
+	path = cmake/ucm
+	url = https://github.com/onqtam/ucm
+[submodule "cmake/--force"]
+	path = cmake/--force
+	url = https://github.com/sakra/cotire
+[submodule "cmake/cotire"]
+	path = cmake/cotire
+	url = https://github.com/sakra/cotire

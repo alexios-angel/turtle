@@ -7,8 +7,8 @@ set(PROJECT_MAINTAINER_GIT_USERNAME "angeletakis")
 set(PROJECT_MAINTAINER_NAME "Alexios Angel")
 
 set (CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-include(cotire)
-include(ucm)
+include(cotire/CMake/cotire)
+include(ucm/cmake/ucm)
 
 #file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/include")
 #file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/src")

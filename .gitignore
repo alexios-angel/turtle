@@ -51,7 +51,9 @@ _deps
 
 # CMakeModule Cotire
 cotire/
-turtle_CXX_cotire.cmake
+*_CXX_cotire.cmake
+
+!cmake/
 
 # Compiled files
 bin/
