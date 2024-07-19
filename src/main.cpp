@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
         ("file,f", po::value<std::string>()->default_value("main.py"), "filename to transcompile")
         ("action,a", po::value<std::string>()->default_value("generate"), "action to perform")
         ("type,t", po::value<std::string>()->default_value("grammar"), "type of item to generate")
-        ("language,l", po::value<std::string>()->defualt_value("python"), "language for grammar");
+        ("language,l", po::value<std::string>()->default_value("python"), "language for grammar");
 
     po::variables_map vm;
     po::store(po::parse_command_line(argc, argv, desc), vm);

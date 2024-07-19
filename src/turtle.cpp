@@ -9,8 +9,8 @@
 #include "node.hpp"
 #include "syntax.hpp"
 
-int turtle_main(const boost::program_options::variables_map args) {
-  const boost::filesystem::path file = args["file"].as<std::string>();
+int turtle_main(const boost::program_options::variables_map vm) {
+  const boost::filesystem::path file = vm["file"].as<std::string>();
 
   std::string action = vm["action"].as<std::string>();
   std::string type = vm["type"].as<std::string>();
