@@ -78,7 +78,7 @@ find_package(Backtrace)
 
 # check if boost was found
 if (Boost_FOUND)
-    message("boost found")
+    message(STATUS "Boost found")
     INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 else ()
     message(FATAL_ERROR "Cannot find Boost")
