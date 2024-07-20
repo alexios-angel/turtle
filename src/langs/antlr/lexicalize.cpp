@@ -1,7 +1,7 @@
 //
 // Created by alex on 11/11/21.
 //
-#include "python/lexicalize.hpp"
+#include "langs/antlr/lexicalize.hpp"
 #include "boost/foreach.hpp"
 #include "ctre.hpp"
 #include "global.hpp"
@@ -13,8 +13,6 @@
 #include <string_view>
 #include <type_traits>
 #include <vector>
-
-namespace turtle::lang::python {
 
 // clang-format off
 /*
@@ -183,8 +181,6 @@ void lexicalize(std::string &filedata,
   lexemes.push_back(
       {.flag = turtle::token::flag::Control::ENDMARKER, .token = {.str = ""}});
 }
-
-} // namespace turtle::lang::python
 /*
 void set_lex_groups(std::vector<turtle::node_t> &lexemes) {
   static constexpr std::pair<const char *, uint32_t> example_tokens[] = {

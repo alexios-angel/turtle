@@ -5,7 +5,7 @@
 
 #include "boost/program_options.hpp"
 #include "global.hpp"
-#include "python/lexicalize.hpp"
+#include "langs/python/lexicalize.hpp"
 #include "node.hpp"
 #include "syntax.hpp"
 

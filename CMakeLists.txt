@@ -125,12 +125,9 @@ add_executable(${PROJECT_NAME}
         src/main.cpp
         src/global.cpp
         src/turtle.cpp
-        src/python/lexicalize.cpp
-
-        include/global.hpp
-        include/python/lexicalize.hpp
-        include/turtle.hpp
-        include/node.hpp)
+        src/langs/python/lexicalize.cpp
+        src/langs/antlr/lexicalize.cpp
+)
 
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${Threads_LIBRARIES} ${Backtrace_LIBRARIES})
 cotire(${PROJECT_NAME})
