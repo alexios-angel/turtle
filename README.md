@@ -18,7 +18,8 @@ sudo apt install -y cmake clang libboost-all-dev build-essential
 If you would like to contribute you would need
 
 ```Bash
-sudo apt install -y cmake clang libboost-all-dev build-essential
+sudo apt install -y clang libboost-all-dev build-essential
+pip install cmake # To install the latest CMake; The apt repo is old
 ```
 ### Build instructions
 
