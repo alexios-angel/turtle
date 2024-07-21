@@ -2,13 +2,13 @@
 // Created by alex on 11/11/21.
 //
 
-#ifndef TURTLE_LEXICALIZE_H
-#define TURTLE_LEXICALIZE_H
+#ifndef TURTLE_LANG_ANTLR_LEXICALIZE_H
+#define TURTLE_LANG_ANTLR_LEXICALIZE_H
 #include "node.hpp"
 
-namespace turtle::lang::python {
+namespace turtle::langs::antlr {
 void lexicalize(std::string &filedata,
                 turtle::turtle_vector<turtle::node_t> &lexemes);
-} // namespace turtle::lang::python
+} // namespace turtle::lang::antlr
 
 #endif // TURTLE_LEXICALIZE_H

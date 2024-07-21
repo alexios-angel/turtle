@@ -14,7 +14,7 @@
 #include <type_traits>
 #include <vector>
 
-namespace turtle::lang::python {
+namespace turtle::langs::python {
 
 // clang-format off
 /*

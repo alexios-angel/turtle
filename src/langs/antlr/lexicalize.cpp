@@ -14,6 +14,7 @@
 #include <type_traits>
 #include <vector>
 
+namespace turtle::langs::antlr {
 // clang-format off
 /*
 Paste into regex101.com
@@ -181,10 +182,5 @@ void lexicalize(std::string &filedata,
   lexemes.push_back(
       {.flag = turtle::token::flag::Control::ENDMARKER, .token = {.str = ""}});
 }
-/*
-void set_lex_groups(std::vector<turtle::node_t> &lexemes) {
-  static constexpr std::pair<const char *, uint32_t> example_tokens[] = {
-      {"\"string\"", turtle::token::flag::Data::DATA_TYPE_STRING},
-      {" ", turtle::token::flag::Control::WHITESPACE}};
-}
-*/
+
+} // namespace turtle::langs::antlr

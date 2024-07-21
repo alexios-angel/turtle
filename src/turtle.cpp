@@ -6,6 +6,7 @@
 #include "boost/program_options.hpp"
 #include "global.hpp"
 #include "langs/python/lexicalize.hpp"
+#include "langs/antlr/lexicalize.hpp"
 #include "node.hpp"
 #include "syntax.hpp"
 
@@ -24,9 +25,9 @@ int turtle_main(const boost::program_options::variables_map vm) {
   std::string filedata;
   boost::filesystem::load_string_file(file, filedata);
   if(language == "python"){
-    turtle::lang::python::lexicalize(filedata, lexemes);
+    turtle::langs::python::lexicalize(filedata, lexemes);
   } else if (language == "antlr"){
-    std::cout << "antlr logic\n";
+    turtle::langs::antlr::lexicalize(filedata, lexemes);
   } else {
     BOOST_LOG_TRIVIAL(error) << "Unknown language " << language << "\n";
     return 1;
