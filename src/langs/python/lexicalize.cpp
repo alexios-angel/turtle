@@ -83,28 +83,6 @@ Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
         };
 // clang-format on
 
-// Primary template
-template <typename... Args> struct RegexResultsNumberOfTemplateArgs;
-
-// Specialization for variadic template
-template <typename... Args>
-struct RegexResultsNumberOfTemplateArgs<const ctre::regex_results<Args...>> {
-  static constexpr std::size_t value = sizeof...(Args);
-};
-
-template <size_t MaxDepth, size_t N = 1, typename Match>
-int get_matching_group(const Match &match) {
-  if constexpr (N >= MaxDepth) {
-    return -1; // No matching group found within MaxDepth
-  } else {
-    if (match.template get<N>()) {
-      return N;
-    } else {
-      return get_matching_group<MaxDepth, N + 1>(match);
-    }
-  }
-}
-
 void lexicalize(std::string &filedata,
                 turtle::turtle_vector<turtle::node_t> &lexemes) {
 
@@ -185,10 +163,3 @@ void lexicalize(std::string &filedata,
 }
 
 } // namespace turtle::lang::python
-/*
-void set_lex_groups(std::vector<turtle::node_t> &lexemes) {
-  static constexpr std::pair<const char *, uint32_t> example_tokens[] = {
-      {"\"string\"", turtle::token::flag::Data::DATA_TYPE_STRING},
-      {" ", turtle::token::flag::Control::WHITESPACE}};
-}
-*/
