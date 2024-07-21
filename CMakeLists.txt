@@ -31,8 +31,9 @@ ucm_add_flags(CXX "-std=c++${CMAKE_CXX_STANDARD}")
 ucm_add_flags(CXX
         -Wall -Wextra -Wnewline-eof -Wmissing-prototypes
         #-Werror -ferror-limit=5 -fmax-errors=5
-        -Wno-c99-designator -Wno-unused-command-line-argument
+        -Wno-c99-designator -Wno-unused-command-line-argument -Wno-enum-constexpr-conversion
         -Wno-deprecated-enum-enum-conversion -Wno-deprecated-anon-enum-enum-conversion
+        -Wno-missing-designated-field-initializers -Wno-missing-template-arg-list-after-template-kw
         #-Weverything
         #-Wno-c++20-compat -Wno-c++98-compat -Wno-pre-c++17-compat -Wno-c++98-compat-pedantic -Wno-undef
         #-Wno-padded -Wno-gnu-anonymous-struct -Wno-nested-anon-types
