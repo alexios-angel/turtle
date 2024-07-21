@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8.0)
+cmake_minimum_required(VERSION 3.30.0)
 include(FetchContent)
 
 project(turtle VERSION 1.0)
