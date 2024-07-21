@@ -28,5 +28,5 @@ cd turtle
 cmake . -D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++
 # If you would like to use the Mold linker
 # cmake . -D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++ -D CMAKE_LINKER_TYPE=MOLD
-make
+cmake --build . -j $(nproc)
 ```
