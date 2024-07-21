@@ -8,7 +8,6 @@
 #include "langs/python/lexicalize.hpp"
 #include "langs/antlr/lexicalize.hpp"
 #include "node.hpp"
-#include "syntax.hpp"
 
 int turtle_main(const boost::program_options::variables_map vm) {
   const boost::filesystem::path file = vm["file"].as<std::string>();
