@@ -26,7 +26,8 @@
 #define as_pattern turtle::token::flags::Group::as_pattern,
 #define assert_stmt turtle::token::flags::Group::assert_stmt,
 #define assignment turtle::token::flags::Group::assignment,
-#define assignment_expression turtle::token::flags::Group::assignment_expression,
+#define assignment_expression                                                  \
+  turtle::token::flags::Group::assignment_expression,
 #define atom turtle::token::flags::Group::atom,
 #define attr turtle::token::flags::Group::attr,
 #define augassign turtle::token::flags::Group::augassign,
@@ -41,7 +42,8 @@
 #define class_def_raw turtle::token::flags::Group::class_def_raw,
 #define class_pattern turtle::token::flags::Group::class_pattern,
 #define closed_pattern turtle::token::flags::Group::closed_pattern,
-#define compare_op_bitwise_or_pair turtle::token::flags::Group::compare_op_bitwise_or_pair,
+#define compare_op_bitwise_or_pair                                             \
+  turtle::token::flags::Group::compare_op_bitwise_or_pair,
 #define comparison turtle::token::flags::Group::comparison,
 #define complex_number turtle::token::flags::Group::complex_number,
 #define compound_stmt turtle::token::flags::Group::compound_stmt,
@@ -59,8 +61,10 @@
 #define dotted_as_names turtle::token::flags::Group::dotted_as_names,
 #define dotted_name turtle::token::flags::Group::dotted_name,
 #define double_star_pattern turtle::token::flags::Group::double_star_pattern,
-#define double_starred_kvpair turtle::token::flags::Group::double_starred_kvpair,
-#define double_starred_kvpairs turtle::token::flags::Group::double_starred_kvpairs,
+#define double_starred_kvpair                                                  \
+  turtle::token::flags::Group::double_starred_kvpair,
+#define double_starred_kvpairs                                                 \
+  turtle::token::flags::Group::double_starred_kvpairs,
 #define elif_stmt turtle::token::flags::Group::elif_stmt,
 #define else_block turtle::token::flags::Group::else_block,
 #define eq_bitwise_or turtle::token::flags::Group::eq_bitwise_or,
@@ -78,9 +82,11 @@
 #define fstring turtle::token::flags::Group::fstring,
 #define fstring_conversion turtle::token::flags::Group::fstring_conversion,
 #define fstring_format_spec turtle::token::flags::Group::fstring_format_spec,
-#define fstring_full_format_spec turtle::token::flags::Group::fstring_full_format_spec,
+#define fstring_full_format_spec                                               \
+  turtle::token::flags::Group::fstring_full_format_spec,
 #define fstring_middle turtle::token::flags::Group::fstring_middle,
-#define fstring_replacement_field turtle::token::flags::Group::fstring_replacement_field,
+#define fstring_replacement_field                                              \
+  turtle::token::flags::Group::fstring_replacement_field,
 #define fstringstring turtle::token::flags::Group::fstringstring,
 #define func_type turtle::token::flags::Group::func_type,
 #define func_type_comment turtle::token::flags::Group::func_type_comment,
@@ -112,19 +118,25 @@
 #define keyword_pattern turtle::token::flags::Group::keyword_pattern,
 #define keyword_patterns turtle::token::flags::Group::keyword_patterns,
 #define kvpair turtle::token::flags::Group::kvpair,
-#define kwarg_or_double_starred turtle::token::flags::Group::kwarg_or_double_starred,
+#define kwarg_or_double_starred                                                \
+  turtle::token::flags::Group::kwarg_or_double_starred,
 #define kwarg_or_starred turtle::token::flags::Group::kwarg_or_starred,
 #define kwargs turtle::token::flags::Group::kwargs,
 #define kwds turtle::token::flags::Group::kwds,
 #define lambda_kwds turtle::token::flags::Group::lambda_kwds,
 #define lambda_param turtle::token::flags::Group::lambda_param,
-#define lambda_param_maybe_default turtle::token::flags::Group::lambda_param_maybe_default,
-#define lambda_param_no_default turtle::token::flags::Group::lambda_param_no_default,
-#define lambda_param_with_default turtle::token::flags::Group::lambda_param_with_default,
+#define lambda_param_maybe_default                                             \
+  turtle::token::flags::Group::lambda_param_maybe_default,
+#define lambda_param_no_default                                                \
+  turtle::token::flags::Group::lambda_param_no_default,
+#define lambda_param_with_default                                              \
+  turtle::token::flags::Group::lambda_param_with_default,
 #define lambda_parameters turtle::token::flags::Group::lambda_parameters,
 #define lambda_params turtle::token::flags::Group::lambda_params,
-#define lambda_slash_no_default turtle::token::flags::Group::lambda_slash_no_default,
-#define lambda_slash_with_default turtle::token::flags::Group::lambda_slash_with_default,
+#define lambda_slash_no_default                                                \
+  turtle::token::flags::Group::lambda_slash_no_default,
+#define lambda_slash_with_default                                              \
+  turtle::token::flags::Group::lambda_slash_with_default,
 #define lambda_star_etc turtle::token::flags::Group::lambda_star_etc,
 #define lambdef turtle::token::flags::Group::lambdef,
 #define list turtle::token::flags::Group::list,
@@ -135,25 +147,30 @@
 #define lte_bitwise_or turtle::token::flags::Group::lte_bitwise_or,
 #define mapping_pattern turtle::token::flags::Group::mapping_pattern,
 #define match_stmt turtle::token::flags::Group::match_stmt,
-#define maybe_sequence_pattern turtle::token::flags::Group::maybe_sequence_pattern,
+#define maybe_sequence_pattern                                                 \
+  turtle::token::flags::Group::maybe_sequence_pattern,
 #define maybe_star_pattern turtle::token::flags::Group::maybe_star_pattern,
 #define name_or_attr turtle::token::flags::Group::name_or_attr,
 #define named_expression turtle::token::flags::Group::named_expression,
 #define nonlocal_stmt turtle::token::flags::Group::nonlocal_stmt,
 #define noteq_bitwise_or turtle::token::flags::Group::noteq_bitwise_or,
 #define notin_bitwise_or turtle::token::flags::Group::notin_bitwise_or,
-#define open_sequence_pattern turtle::token::flags::Group::open_sequence_pattern,
+#define open_sequence_pattern                                                  \
+  turtle::token::flags::Group::open_sequence_pattern,
 #define or_pattern turtle::token::flags::Group::or_pattern,
 #define param turtle::token::flags::Group::param,
 #define param_maybe_default turtle::token::flags::Group::param_maybe_default,
 #define param_no_default turtle::token::flags::Group::param_no_default,
-#define param_no_default_star_annotation turtle::token::flags::Group::param_no_default_star_annotation,
-#define param_star_annotation turtle::token::flags::Group::param_star_annotation,
+#define param_no_default_star_annotation                                       \
+  turtle::token::flags::Group::param_no_default_star_annotation,
+#define param_star_annotation                                                  \
+  turtle::token::flags::Group::param_star_annotation,
 #define param_with_default turtle::token::flags::Group::param_with_default,
 #define parameters turtle::token::flags::Group::parameters,
 #define params turtle::token::flags::Group::params,
 #define pattern turtle::token::flags::Group::pattern,
-#define pattern_capture_target turtle::token::flags::Group::pattern_capture_target,
+#define pattern_capture_target                                                 \
+  turtle::token::flags::Group::pattern_capture_target,
 #define patterns turtle::token::flags::Group::patterns,
 #define positional_patterns turtle::token::flags::Group::positional_patterns,
 #define power turtle::token::flags::Group::power,
@@ -169,7 +186,8 @@
 #define signed_real_number turtle::token::flags::Group::signed_real_number,
 #define simple_stmt turtle::token::flags::Group::simple_stmt,
 #define simple_stmts turtle::token::flags::Group::simple_stmts,
-#define single_subscript_attribute_target turtle::token::flags::Group::single_subscript_attribute_target,
+#define single_subscript_attribute_target                                      \
+  turtle::token::flags::Group::single_subscript_attribute_target,
 #define single_target turtle::token::flags::Group::single_target,
 #define slash_no_default turtle::token::flags::Group::slash_no_default,
 #define slash_with_default turtle::token::flags::Group::slash_with_default,
@@ -180,13 +198,17 @@
 #define star_etc turtle::token::flags::Group::star_etc,
 #define star_expression turtle::token::flags::Group::star_expression,
 #define star_expressions turtle::token::flags::Group::star_expressions,
-#define star_named_expression turtle::token::flags::Group::star_named_expression,
-#define star_named_expressions turtle::token::flags::Group::star_named_expressions,
+#define star_named_expression                                                  \
+  turtle::token::flags::Group::star_named_expression,
+#define star_named_expressions                                                 \
+  turtle::token::flags::Group::star_named_expressions,
 #define star_pattern turtle::token::flags::Group::star_pattern,
 #define star_target turtle::token::flags::Group::star_target,
 #define star_targets turtle::token::flags::Group::star_targets,
-#define star_targets_list_seq turtle::token::flags::Group::star_targets_list_seq,
-#define star_targets_tuple_seq turtle::token::flags::Group::star_targets_tuple_seq,
+#define star_targets_list_seq                                                  \
+  turtle::token::flags::Group::star_targets_list_seq,
+#define star_targets_tuple_seq                                                 \
+  turtle::token::flags::Group::star_targets_tuple_seq,
 #define starred_expression turtle::token::flags::Group::starred_expression,
 #define statement turtle::token::flags::Group::statement,
 #define statement_newline turtle::token::flags::Group::statement_newline,
@@ -197,7 +219,8 @@
 #define sum turtle::token::flags::Group::sum,
 #define t_lookahead turtle::token::flags::Group::t_lookahead,
 #define t_primary turtle::token::flags::Group::t_primary,
-#define target_with_star_atom turtle::token::flags::Group::target_with_star_atom,
+#define target_with_star_atom                                                  \
+  turtle::token::flags::Group::target_with_star_atom,
 #define term turtle::token::flags::Group::term,
 #define try_stmt turtle::token::flags::Group::try_stmt,
 #define tuple turtle::token::flags::Group::tuple,
@@ -220,7 +243,7 @@ namespace turtle {
 void syntax() {
   constexpr auto syntaxRegex = std::to_array<turtle::turtle_flag_t>({
 
-    1
+      1
 
   });
 }

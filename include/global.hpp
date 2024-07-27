@@ -6,7 +6,7 @@
 #include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/log/utility/setup/console.hpp>
 #include <boost/stacktrace.hpp>
-#define LOG BOOST_LOG_TRIVIAL
+#include <filesystem>
 
 #ifndef NDEBUG
 #define DEBUG_CPP
@@ -50,5 +50,8 @@ auto distance(const auto &first, const auto &last) {
   }
   return i;
 }
+
+void load_string_file(const std::filesystem::path &path, std::string str);
+
 } // namespace turtle
 #endif

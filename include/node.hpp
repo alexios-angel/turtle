@@ -166,8 +166,8 @@ namespace token {
 
 #define ENUM_NAME Control
 TURTLE_CLASS(ENUM_NAME, NULL_TOKEN, HAS_VALUE = NULL_TOKEN, NEWLINE, WHITESPACE,
-             INDENT, DEDENT, ENDMARKER, ERROR, ERRORTOKEN,
-             TokenError, UNSUPPORTED)
+             INDENT, DEDENT, ENDMARKER, ERROR, ERRORTOKEN, TokenError,
+             UNSUPPORTED)
 #undef ENUM_NAME
 
 #define ENUM_NAME Data
@@ -284,7 +284,7 @@ TURTLE_CLASS(
     sum, t_lookahead, t_primary, target_with_star_atom, term, try_stmt, tuple,
     type_alias, type_expressions, type_param, type_param_bound, type_param_seq,
     type_params, value_pattern, while_stmt, wildcard_pattern, with_item,
-    with_stmt, yield_expr, yield_stmt )
+    with_stmt, yield_expr, yield_stmt)
 #undef ENUM_NAME
 
 namespace flag {
@@ -317,8 +317,8 @@ namespace flag {
 #define M_typeFlagMacro(N) (N << tokenTypeOffset)
 #define ENUM_NAME Type
 TURTLE_CLASS(ENUM_NAME,
-            // ASCII missing on purpose
-            CONTROL = M_typeFlagMacro(token::ENUM_NAME::CONTROL),
+             // ASCII missing on purpose
+             CONTROL = M_typeFlagMacro(token::ENUM_NAME::CONTROL),
              DELIMITERS = M_typeFlagMacro(token::ENUM_NAME::DELIMITERS),
              ARITHMETIC = M_typeFlagMacro(token::ENUM_NAME::ARITHMETIC),
              KEYWORD = M_typeFlagMacro(token::ENUM_NAME::KEYWORD),
@@ -353,11 +353,11 @@ TURTLE_CLASS(ENUM_NAME, NULL_TOKEN = 0u | flag::Type::CONTROL,
                           M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
                           flag::Type::CONTROL,
              INDENT = M_turtle_flag(token::ENUM_NAME::INDENT) |
-                          M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
-                          flag::Type::CONTROL,
+                      M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
+                      flag::Type::CONTROL,
              DEDENT = M_turtle_flag(token::ENUM_NAME::DEDENT) |
-                          M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
-                          flag::Type::CONTROL,
+                      M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
+                      flag::Type::CONTROL,
              ENDMARKER = M_turtle_flag(token::ENUM_NAME::ENDMARKER) |
                          M_turtle_flag(token::ENUM_NAME::HAS_VALUE) |
                          flag::Type::CONTROL,
@@ -692,203 +692,261 @@ TURTLE_CLASS(
 #undef ENUM_NAME
 
 #define ENUM_NAME Group
-TURTLE_CLASS(ENUM_NAME,
-annotated_rhs = token::ENUM_NAME::annotated_rhs | flag::Type::GROUP, //
-annotation = token::ENUM_NAME::annotation | flag::Type::GROUP, //
-args = token::ENUM_NAME::args | flag::Type::GROUP, //
-arguments = token::ENUM_NAME::arguments | flag::Type::GROUP, //
-as_pattern = token::ENUM_NAME::as_pattern | flag::Type::GROUP, //
-assert_stmt = token::ENUM_NAME::assert_stmt | flag::Type::GROUP, //
-assignment = token::ENUM_NAME::assignment | flag::Type::GROUP, //
-assignment_expression = token::ENUM_NAME::assignment_expression | flag::Type::GROUP, //
-atom = token::ENUM_NAME::atom | flag::Type::GROUP, //
-attr = token::ENUM_NAME::attr | flag::Type::GROUP, //
-augassign = token::ENUM_NAME::augassign | flag::Type::GROUP, //
-await_primary = token::ENUM_NAME::await_primary | flag::Type::GROUP, //
-bitwise_and = token::ENUM_NAME::bitwise_and | flag::Type::GROUP, //
-bitwise_or = token::ENUM_NAME::bitwise_or | flag::Type::GROUP, //
-bitwise_xor = token::ENUM_NAME::bitwise_xor | flag::Type::GROUP, //
-block = token::ENUM_NAME::block | flag::Type::GROUP, //
-capture_pattern = token::ENUM_NAME::capture_pattern | flag::Type::GROUP, //
-case_block = token::ENUM_NAME::case_block | flag::Type::GROUP, //
-class_def = token::ENUM_NAME::class_def | flag::Type::GROUP, //
-class_def_raw = token::ENUM_NAME::class_def_raw | flag::Type::GROUP, //
-class_pattern = token::ENUM_NAME::class_pattern | flag::Type::GROUP, //
-closed_pattern = token::ENUM_NAME::closed_pattern | flag::Type::GROUP, //
-compare_op_bitwise_or_pair = token::ENUM_NAME::compare_op_bitwise_or_pair | flag::Type::GROUP, //
-comparison = token::ENUM_NAME::comparison | flag::Type::GROUP, //
-complex_number = token::ENUM_NAME::complex_number | flag::Type::GROUP, //
-compound_stmt = token::ENUM_NAME::compound_stmt | flag::Type::GROUP, //
-conjunction = token::ENUM_NAME::conjunction | flag::Type::GROUP, //
-decorators = token::ENUM_NAME::decorators | flag::Type::GROUP, //
-default_t = token::ENUM_NAME::default_t | flag::Type::GROUP, //
-del_stmt = token::ENUM_NAME::del_stmt | flag::Type::GROUP, //
-del_t_atom = token::ENUM_NAME::del_t_atom | flag::Type::GROUP, //
-del_target = token::ENUM_NAME::del_target | flag::Type::GROUP, //
-del_targets = token::ENUM_NAME::del_targets | flag::Type::GROUP, //
-dict = token::ENUM_NAME::dict | flag::Type::GROUP, //
-dictcomp = token::ENUM_NAME::dictcomp | flag::Type::GROUP, //
-disjunction = token::ENUM_NAME::disjunction | flag::Type::GROUP, //
-dotted_as_name = token::ENUM_NAME::dotted_as_name | flag::Type::GROUP, //
-dotted_as_names = token::ENUM_NAME::dotted_as_names | flag::Type::GROUP, //
-dotted_name = token::ENUM_NAME::dotted_name | flag::Type::GROUP, //
-double_star_pattern = token::ENUM_NAME::double_star_pattern | flag::Type::GROUP, //
-double_starred_kvpair = token::ENUM_NAME::double_starred_kvpair | flag::Type::GROUP, //
-double_starred_kvpairs = token::ENUM_NAME::double_starred_kvpairs | flag::Type::GROUP, //
-elif_stmt = token::ENUM_NAME::elif_stmt | flag::Type::GROUP, //
-else_block = token::ENUM_NAME::else_block | flag::Type::GROUP, //
-eq_bitwise_or = token::ENUM_NAME::eq_bitwise_or | flag::Type::GROUP, //
-eval = token::ENUM_NAME::eval | flag::Type::GROUP, //
-except_block = token::ENUM_NAME::except_block | flag::Type::GROUP, //
-except_star_block = token::ENUM_NAME::except_star_block | flag::Type::GROUP, //
-expression = token::ENUM_NAME::expression | flag::Type::GROUP, //
-expressions = token::ENUM_NAME::expressions | flag::Type::GROUP, //
-factor = token::ENUM_NAME::factor | flag::Type::GROUP, //
-file = token::ENUM_NAME::file | flag::Type::GROUP, //
-finally_block = token::ENUM_NAME::finally_block | flag::Type::GROUP, //
-for_if_clause = token::ENUM_NAME::for_if_clause | flag::Type::GROUP, //
-for_if_clauses = token::ENUM_NAME::for_if_clauses | flag::Type::GROUP, //
-for_stmt = token::ENUM_NAME::for_stmt | flag::Type::GROUP, //
-fstring = token::ENUM_NAME::fstring | flag::Type::GROUP, //
-fstring_conversion = token::ENUM_NAME::fstring_conversion | flag::Type::GROUP, //
-fstring_format_spec = token::ENUM_NAME::fstring_format_spec | flag::Type::GROUP, //
-fstring_full_format_spec = token::ENUM_NAME::fstring_full_format_spec | flag::Type::GROUP, //
-fstring_middle = token::ENUM_NAME::fstring_middle | flag::Type::GROUP, //
-fstring_replacement_field = token::ENUM_NAME::fstring_replacement_field | flag::Type::GROUP, //
-fstringstring = token::ENUM_NAME::fstringstring | flag::Type::GROUP, //
-func_type = token::ENUM_NAME::func_type | flag::Type::GROUP, //
-func_type_comment = token::ENUM_NAME::func_type_comment | flag::Type::GROUP, //
-function_def = token::ENUM_NAME::function_def | flag::Type::GROUP, //
-function_def_raw = token::ENUM_NAME::function_def_raw | flag::Type::GROUP, //
-genexp = token::ENUM_NAME::genexp | flag::Type::GROUP, //
-global_stmt = token::ENUM_NAME::global_stmt | flag::Type::GROUP, //
-group = token::ENUM_NAME::group | flag::Type::GROUP, //
-group_pattern = token::ENUM_NAME::group_pattern | flag::Type::GROUP, //
-gt_bitwise_or = token::ENUM_NAME::gt_bitwise_or | flag::Type::GROUP, //
-gte_bitwise_or = token::ENUM_NAME::gte_bitwise_or | flag::Type::GROUP, //
-guard = token::ENUM_NAME::guard | flag::Type::GROUP, //
-if_stmt = token::ENUM_NAME::if_stmt | flag::Type::GROUP, //
-imaginary_number = token::ENUM_NAME::imaginary_number | flag::Type::GROUP, //
-import_from = token::ENUM_NAME::import_from | flag::Type::GROUP, //
-import_from_as_name = token::ENUM_NAME::import_from_as_name | flag::Type::GROUP, //
-import_from_as_names = token::ENUM_NAME::import_from_as_names | flag::Type::GROUP, //
-import_from_targets = token::ENUM_NAME::import_from_targets | flag::Type::GROUP, //
-import_name = token::ENUM_NAME::import_name | flag::Type::GROUP, //
-import_stmt = token::ENUM_NAME::import_stmt | flag::Type::GROUP, //
-in_bitwise_or = token::ENUM_NAME::in_bitwise_or | flag::Type::GROUP, //
-interactive = token::ENUM_NAME::interactive | flag::Type::GROUP, //
-invalid_default = token::ENUM_NAME::invalid_default | flag::Type::GROUP, //
-inversion = token::ENUM_NAME::inversion | flag::Type::GROUP, //
-is_bitwise_or = token::ENUM_NAME::is_bitwise_or | flag::Type::GROUP, //
-isnot_bitwise_or = token::ENUM_NAME::isnot_bitwise_or | flag::Type::GROUP, //
-items_pattern = token::ENUM_NAME::items_pattern | flag::Type::GROUP, //
-key_value_pattern = token::ENUM_NAME::key_value_pattern | flag::Type::GROUP, //
-keyword_pattern = token::ENUM_NAME::keyword_pattern | flag::Type::GROUP, //
-keyword_patterns = token::ENUM_NAME::keyword_patterns | flag::Type::GROUP, //
-kvpair = token::ENUM_NAME::kvpair | flag::Type::GROUP, //
-kwarg_or_double_starred = token::ENUM_NAME::kwarg_or_double_starred | flag::Type::GROUP, //
-kwarg_or_starred = token::ENUM_NAME::kwarg_or_starred | flag::Type::GROUP, //
-kwargs = token::ENUM_NAME::kwargs | flag::Type::GROUP, //
-kwds = token::ENUM_NAME::kwds | flag::Type::GROUP, //
-lambda_kwds = token::ENUM_NAME::lambda_kwds | flag::Type::GROUP, //
-lambda_param = token::ENUM_NAME::lambda_param | flag::Type::GROUP, //
-lambda_param_maybe_default = token::ENUM_NAME::lambda_param_maybe_default | flag::Type::GROUP, //
-lambda_param_no_default = token::ENUM_NAME::lambda_param_no_default | flag::Type::GROUP, //
-lambda_param_with_default = token::ENUM_NAME::lambda_param_with_default | flag::Type::GROUP, //
-lambda_parameters = token::ENUM_NAME::lambda_parameters | flag::Type::GROUP, //
-lambda_params = token::ENUM_NAME::lambda_params | flag::Type::GROUP, //
-lambda_slash_no_default = token::ENUM_NAME::lambda_slash_no_default | flag::Type::GROUP, //
-lambda_slash_with_default = token::ENUM_NAME::lambda_slash_with_default | flag::Type::GROUP, //
-lambda_star_etc = token::ENUM_NAME::lambda_star_etc | flag::Type::GROUP, //
-lambdef = token::ENUM_NAME::lambdef | flag::Type::GROUP, //
-list = token::ENUM_NAME::list | flag::Type::GROUP, //
-listcomp = token::ENUM_NAME::listcomp | flag::Type::GROUP, //
-literal_expr = token::ENUM_NAME::literal_expr | flag::Type::GROUP, //
-literal_pattern = token::ENUM_NAME::literal_pattern | flag::Type::GROUP, //
-lt_bitwise_or = token::ENUM_NAME::lt_bitwise_or | flag::Type::GROUP, //
-lte_bitwise_or = token::ENUM_NAME::lte_bitwise_or | flag::Type::GROUP, //
-mapping_pattern = token::ENUM_NAME::mapping_pattern | flag::Type::GROUP, //
-match_stmt = token::ENUM_NAME::match_stmt | flag::Type::GROUP, //
-maybe_sequence_pattern = token::ENUM_NAME::maybe_sequence_pattern | flag::Type::GROUP, //
-maybe_star_pattern = token::ENUM_NAME::maybe_star_pattern | flag::Type::GROUP, //
-name_or_attr = token::ENUM_NAME::name_or_attr | flag::Type::GROUP, //
-named_expression = token::ENUM_NAME::named_expression | flag::Type::GROUP, //
-nonlocal_stmt = token::ENUM_NAME::nonlocal_stmt | flag::Type::GROUP, //
-noteq_bitwise_or = token::ENUM_NAME::noteq_bitwise_or | flag::Type::GROUP, //
-notin_bitwise_or = token::ENUM_NAME::notin_bitwise_or | flag::Type::GROUP, //
-open_sequence_pattern = token::ENUM_NAME::open_sequence_pattern | flag::Type::GROUP, //
-or_pattern = token::ENUM_NAME::or_pattern | flag::Type::GROUP, //
-param = token::ENUM_NAME::param | flag::Type::GROUP, //
-param_maybe_default = token::ENUM_NAME::param_maybe_default | flag::Type::GROUP, //
-param_no_default = token::ENUM_NAME::param_no_default | flag::Type::GROUP, //
-param_no_default_star_annotation = token::ENUM_NAME::param_no_default_star_annotation | flag::Type::GROUP, //
-param_star_annotation = token::ENUM_NAME::param_star_annotation | flag::Type::GROUP, //
-param_with_default = token::ENUM_NAME::param_with_default | flag::Type::GROUP, //
-parameters = token::ENUM_NAME::parameters | flag::Type::GROUP, //
-params = token::ENUM_NAME::params | flag::Type::GROUP, //
-pattern = token::ENUM_NAME::pattern | flag::Type::GROUP, //
-pattern_capture_target = token::ENUM_NAME::pattern_capture_target | flag::Type::GROUP, //
-patterns = token::ENUM_NAME::patterns | flag::Type::GROUP, //
-positional_patterns = token::ENUM_NAME::positional_patterns | flag::Type::GROUP, //
-power = token::ENUM_NAME::power | flag::Type::GROUP, //
-primary = token::ENUM_NAME::primary | flag::Type::GROUP, //
-raise_stmt = token::ENUM_NAME::raise_stmt | flag::Type::GROUP, //
-real_number = token::ENUM_NAME::real_number | flag::Type::GROUP, //
-return_stmt = token::ENUM_NAME::return_stmt | flag::Type::GROUP, //
-sequence_pattern = token::ENUM_NAME::sequence_pattern | flag::Type::GROUP, //
-set = token::ENUM_NAME::set | flag::Type::GROUP, //
-setcomp = token::ENUM_NAME::setcomp | flag::Type::GROUP, //
-shift_expr = token::ENUM_NAME::shift_expr | flag::Type::GROUP, //
-signed_number = token::ENUM_NAME::signed_number | flag::Type::GROUP, //
-signed_real_number = token::ENUM_NAME::signed_real_number | flag::Type::GROUP, //
-simple_stmt = token::ENUM_NAME::simple_stmt | flag::Type::GROUP, //
-simple_stmts = token::ENUM_NAME::simple_stmts | flag::Type::GROUP, //
-single_subscript_attribute_target = token::ENUM_NAME::single_subscript_attribute_target | flag::Type::GROUP, //
-single_target = token::ENUM_NAME::single_target | flag::Type::GROUP, //
-slash_no_default = token::ENUM_NAME::slash_no_default | flag::Type::GROUP, //
-slash_with_default = token::ENUM_NAME::slash_with_default | flag::Type::GROUP, //
-slice = token::ENUM_NAME::slice | flag::Type::GROUP, //
-slices = token::ENUM_NAME::slices | flag::Type::GROUP, //
-star_annotation = token::ENUM_NAME::star_annotation | flag::Type::GROUP, //
-star_atom = token::ENUM_NAME::star_atom | flag::Type::GROUP, //
-star_etc = token::ENUM_NAME::star_etc | flag::Type::GROUP, //
-star_expression = token::ENUM_NAME::star_expression | flag::Type::GROUP, //
-star_expressions = token::ENUM_NAME::star_expressions | flag::Type::GROUP, //
-star_named_expression = token::ENUM_NAME::star_named_expression | flag::Type::GROUP, //
-star_named_expressions = token::ENUM_NAME::star_named_expressions | flag::Type::GROUP, //
-star_pattern = token::ENUM_NAME::star_pattern | flag::Type::GROUP, //
-star_target = token::ENUM_NAME::star_target | flag::Type::GROUP, //
-star_targets = token::ENUM_NAME::star_targets | flag::Type::GROUP, //
-star_targets_list_seq = token::ENUM_NAME::star_targets_list_seq | flag::Type::GROUP, //
-star_targets_tuple_seq = token::ENUM_NAME::star_targets_tuple_seq | flag::Type::GROUP, //
-starred_expression = token::ENUM_NAME::starred_expression | flag::Type::GROUP, //
-statement = token::ENUM_NAME::statement | flag::Type::GROUP, //
-statement_newline = token::ENUM_NAME::statement_newline | flag::Type::GROUP, //
-statements = token::ENUM_NAME::statements | flag::Type::GROUP, //
-string = token::ENUM_NAME::string | flag::Type::GROUP, //
-strings = token::ENUM_NAME::strings | flag::Type::GROUP, //
-subject_expr = token::ENUM_NAME::subject_expr | flag::Type::GROUP, //
-sum = token::ENUM_NAME::sum | flag::Type::GROUP, //
-t_lookahead = token::ENUM_NAME::t_lookahead | flag::Type::GROUP, //
-t_primary = token::ENUM_NAME::t_primary | flag::Type::GROUP, //
-target_with_star_atom = token::ENUM_NAME::target_with_star_atom | flag::Type::GROUP, //
-term = token::ENUM_NAME::term | flag::Type::GROUP, //
-try_stmt = token::ENUM_NAME::try_stmt | flag::Type::GROUP, //
-tuple = token::ENUM_NAME::tuple | flag::Type::GROUP, //
-type_alias = token::ENUM_NAME::type_alias | flag::Type::GROUP, //
-type_expressions = token::ENUM_NAME::type_expressions | flag::Type::GROUP, //
-type_param = token::ENUM_NAME::type_param | flag::Type::GROUP, //
-type_param_bound = token::ENUM_NAME::type_param_bound | flag::Type::GROUP, //
-type_param_seq = token::ENUM_NAME::type_param_seq | flag::Type::GROUP, //
-type_params = token::ENUM_NAME::type_params | flag::Type::GROUP, //
-value_pattern = token::ENUM_NAME::value_pattern | flag::Type::GROUP, //
-while_stmt = token::ENUM_NAME::while_stmt | flag::Type::GROUP, //
-wildcard_pattern = token::ENUM_NAME::wildcard_pattern | flag::Type::GROUP, //
-with_item = token::ENUM_NAME::with_item | flag::Type::GROUP, //
-with_stmt = token::ENUM_NAME::with_stmt | flag::Type::GROUP, //
-yield_expr = token::ENUM_NAME::yield_expr | flag::Type::GROUP, //
-yield_stmt = token::ENUM_NAME::yield_stmt | flag::Type::GROUP
-)
+TURTLE_CLASS(
+    ENUM_NAME,
+    annotated_rhs = token::ENUM_NAME::annotated_rhs | flag::Type::GROUP, //
+    annotation = token::ENUM_NAME::annotation | flag::Type::GROUP,       //
+    args = token::ENUM_NAME::args | flag::Type::GROUP,                   //
+    arguments = token::ENUM_NAME::arguments | flag::Type::GROUP,         //
+    as_pattern = token::ENUM_NAME::as_pattern | flag::Type::GROUP,       //
+    assert_stmt = token::ENUM_NAME::assert_stmt | flag::Type::GROUP,     //
+    assignment = token::ENUM_NAME::assignment | flag::Type::GROUP,       //
+    assignment_expression = token::ENUM_NAME::assignment_expression |
+                            flag::Type::GROUP,                               //
+    atom = token::ENUM_NAME::atom | flag::Type::GROUP,                       //
+    attr = token::ENUM_NAME::attr | flag::Type::GROUP,                       //
+    augassign = token::ENUM_NAME::augassign | flag::Type::GROUP,             //
+    await_primary = token::ENUM_NAME::await_primary | flag::Type::GROUP,     //
+    bitwise_and = token::ENUM_NAME::bitwise_and | flag::Type::GROUP,         //
+    bitwise_or = token::ENUM_NAME::bitwise_or | flag::Type::GROUP,           //
+    bitwise_xor = token::ENUM_NAME::bitwise_xor | flag::Type::GROUP,         //
+    block = token::ENUM_NAME::block | flag::Type::GROUP,                     //
+    capture_pattern = token::ENUM_NAME::capture_pattern | flag::Type::GROUP, //
+    case_block = token::ENUM_NAME::case_block | flag::Type::GROUP,           //
+    class_def = token::ENUM_NAME::class_def | flag::Type::GROUP,             //
+    class_def_raw = token::ENUM_NAME::class_def_raw | flag::Type::GROUP,     //
+    class_pattern = token::ENUM_NAME::class_pattern | flag::Type::GROUP,     //
+    closed_pattern = token::ENUM_NAME::closed_pattern | flag::Type::GROUP,   //
+    compare_op_bitwise_or_pair = token::ENUM_NAME::compare_op_bitwise_or_pair |
+                                 flag::Type::GROUP,                          //
+    comparison = token::ENUM_NAME::comparison | flag::Type::GROUP,           //
+    complex_number = token::ENUM_NAME::complex_number | flag::Type::GROUP,   //
+    compound_stmt = token::ENUM_NAME::compound_stmt | flag::Type::GROUP,     //
+    conjunction = token::ENUM_NAME::conjunction | flag::Type::GROUP,         //
+    decorators = token::ENUM_NAME::decorators | flag::Type::GROUP,           //
+    default_t = token::ENUM_NAME::default_t | flag::Type::GROUP,             //
+    del_stmt = token::ENUM_NAME::del_stmt | flag::Type::GROUP,               //
+    del_t_atom = token::ENUM_NAME::del_t_atom | flag::Type::GROUP,           //
+    del_target = token::ENUM_NAME::del_target | flag::Type::GROUP,           //
+    del_targets = token::ENUM_NAME::del_targets | flag::Type::GROUP,         //
+    dict = token::ENUM_NAME::dict | flag::Type::GROUP,                       //
+    dictcomp = token::ENUM_NAME::dictcomp | flag::Type::GROUP,               //
+    disjunction = token::ENUM_NAME::disjunction | flag::Type::GROUP,         //
+    dotted_as_name = token::ENUM_NAME::dotted_as_name | flag::Type::GROUP,   //
+    dotted_as_names = token::ENUM_NAME::dotted_as_names | flag::Type::GROUP, //
+    dotted_name = token::ENUM_NAME::dotted_name | flag::Type::GROUP,         //
+    double_star_pattern = token::ENUM_NAME::double_star_pattern |
+                          flag::Type::GROUP, //
+    double_starred_kvpair = token::ENUM_NAME::double_starred_kvpair |
+                            flag::Type::GROUP, //
+    double_starred_kvpairs = token::ENUM_NAME::double_starred_kvpairs |
+                             flag::Type::GROUP,                          //
+    elif_stmt = token::ENUM_NAME::elif_stmt | flag::Type::GROUP,         //
+    else_block = token::ENUM_NAME::else_block | flag::Type::GROUP,       //
+    eq_bitwise_or = token::ENUM_NAME::eq_bitwise_or | flag::Type::GROUP, //
+    eval = token::ENUM_NAME::eval | flag::Type::GROUP,                   //
+    except_block = token::ENUM_NAME::except_block | flag::Type::GROUP,   //
+    except_star_block = token::ENUM_NAME::except_star_block |
+                        flag::Type::GROUP,                                 //
+    expression = token::ENUM_NAME::expression | flag::Type::GROUP,         //
+    expressions = token::ENUM_NAME::expressions | flag::Type::GROUP,       //
+    factor = token::ENUM_NAME::factor | flag::Type::GROUP,                 //
+    file = token::ENUM_NAME::file | flag::Type::GROUP,                     //
+    finally_block = token::ENUM_NAME::finally_block | flag::Type::GROUP,   //
+    for_if_clause = token::ENUM_NAME::for_if_clause | flag::Type::GROUP,   //
+    for_if_clauses = token::ENUM_NAME::for_if_clauses | flag::Type::GROUP, //
+    for_stmt = token::ENUM_NAME::for_stmt | flag::Type::GROUP,             //
+    fstring = token::ENUM_NAME::fstring | flag::Type::GROUP,               //
+    fstring_conversion = token::ENUM_NAME::fstring_conversion |
+                         flag::Type::GROUP, //
+    fstring_format_spec = token::ENUM_NAME::fstring_format_spec |
+                          flag::Type::GROUP, //
+    fstring_full_format_spec = token::ENUM_NAME::fstring_full_format_spec |
+                               flag::Type::GROUP,                          //
+    fstring_middle = token::ENUM_NAME::fstring_middle | flag::Type::GROUP, //
+    fstring_replacement_field = token::ENUM_NAME::fstring_replacement_field |
+                                flag::Type::GROUP,                       //
+    fstringstring = token::ENUM_NAME::fstringstring | flag::Type::GROUP, //
+    func_type = token::ENUM_NAME::func_type | flag::Type::GROUP,         //
+    func_type_comment = token::ENUM_NAME::func_type_comment |
+                        flag::Type::GROUP,                             //
+    function_def = token::ENUM_NAME::function_def | flag::Type::GROUP, //
+    function_def_raw = token::ENUM_NAME::function_def_raw |
+                       flag::Type::GROUP,                                  //
+    genexp = token::ENUM_NAME::genexp | flag::Type::GROUP,                 //
+    global_stmt = token::ENUM_NAME::global_stmt | flag::Type::GROUP,       //
+    group = token::ENUM_NAME::group | flag::Type::GROUP,                   //
+    group_pattern = token::ENUM_NAME::group_pattern | flag::Type::GROUP,   //
+    gt_bitwise_or = token::ENUM_NAME::gt_bitwise_or | flag::Type::GROUP,   //
+    gte_bitwise_or = token::ENUM_NAME::gte_bitwise_or | flag::Type::GROUP, //
+    guard = token::ENUM_NAME::guard | flag::Type::GROUP,                   //
+    if_stmt = token::ENUM_NAME::if_stmt | flag::Type::GROUP,               //
+    imaginary_number = token::ENUM_NAME::imaginary_number |
+                       flag::Type::GROUP,                            //
+    import_from = token::ENUM_NAME::import_from | flag::Type::GROUP, //
+    import_from_as_name = token::ENUM_NAME::import_from_as_name |
+                          flag::Type::GROUP, //
+    import_from_as_names = token::ENUM_NAME::import_from_as_names |
+                           flag::Type::GROUP, //
+    import_from_targets = token::ENUM_NAME::import_from_targets |
+                          flag::Type::GROUP,                                 //
+    import_name = token::ENUM_NAME::import_name | flag::Type::GROUP,         //
+    import_stmt = token::ENUM_NAME::import_stmt | flag::Type::GROUP,         //
+    in_bitwise_or = token::ENUM_NAME::in_bitwise_or | flag::Type::GROUP,     //
+    interactive = token::ENUM_NAME::interactive | flag::Type::GROUP,         //
+    invalid_default = token::ENUM_NAME::invalid_default | flag::Type::GROUP, //
+    inversion = token::ENUM_NAME::inversion | flag::Type::GROUP,             //
+    is_bitwise_or = token::ENUM_NAME::is_bitwise_or | flag::Type::GROUP,     //
+    isnot_bitwise_or = token::ENUM_NAME::isnot_bitwise_or |
+                       flag::Type::GROUP,                                //
+    items_pattern = token::ENUM_NAME::items_pattern | flag::Type::GROUP, //
+    key_value_pattern = token::ENUM_NAME::key_value_pattern |
+                        flag::Type::GROUP,                                   //
+    keyword_pattern = token::ENUM_NAME::keyword_pattern | flag::Type::GROUP, //
+    keyword_patterns = token::ENUM_NAME::keyword_patterns |
+                       flag::Type::GROUP,                  //
+    kvpair = token::ENUM_NAME::kvpair | flag::Type::GROUP, //
+    kwarg_or_double_starred = token::ENUM_NAME::kwarg_or_double_starred |
+                              flag::Type::GROUP, //
+    kwarg_or_starred = token::ENUM_NAME::kwarg_or_starred |
+                       flag::Type::GROUP,                              //
+    kwargs = token::ENUM_NAME::kwargs | flag::Type::GROUP,             //
+    kwds = token::ENUM_NAME::kwds | flag::Type::GROUP,                 //
+    lambda_kwds = token::ENUM_NAME::lambda_kwds | flag::Type::GROUP,   //
+    lambda_param = token::ENUM_NAME::lambda_param | flag::Type::GROUP, //
+    lambda_param_maybe_default = token::ENUM_NAME::lambda_param_maybe_default |
+                                 flag::Type::GROUP, //
+    lambda_param_no_default = token::ENUM_NAME::lambda_param_no_default |
+                              flag::Type::GROUP, //
+    lambda_param_with_default = token::ENUM_NAME::lambda_param_with_default |
+                                flag::Type::GROUP, //
+    lambda_parameters = token::ENUM_NAME::lambda_parameters |
+                        flag::Type::GROUP,                               //
+    lambda_params = token::ENUM_NAME::lambda_params | flag::Type::GROUP, //
+    lambda_slash_no_default = token::ENUM_NAME::lambda_slash_no_default |
+                              flag::Type::GROUP, //
+    lambda_slash_with_default = token::ENUM_NAME::lambda_slash_with_default |
+                                flag::Type::GROUP,                           //
+    lambda_star_etc = token::ENUM_NAME::lambda_star_etc | flag::Type::GROUP, //
+    lambdef = token::ENUM_NAME::lambdef | flag::Type::GROUP,                 //
+    list = token::ENUM_NAME::list | flag::Type::GROUP,                       //
+    listcomp = token::ENUM_NAME::listcomp | flag::Type::GROUP,               //
+    literal_expr = token::ENUM_NAME::literal_expr | flag::Type::GROUP,       //
+    literal_pattern = token::ENUM_NAME::literal_pattern | flag::Type::GROUP, //
+    lt_bitwise_or = token::ENUM_NAME::lt_bitwise_or | flag::Type::GROUP,     //
+    lte_bitwise_or = token::ENUM_NAME::lte_bitwise_or | flag::Type::GROUP,   //
+    mapping_pattern = token::ENUM_NAME::mapping_pattern | flag::Type::GROUP, //
+    match_stmt = token::ENUM_NAME::match_stmt | flag::Type::GROUP,           //
+    maybe_sequence_pattern = token::ENUM_NAME::maybe_sequence_pattern |
+                             flag::Type::GROUP, //
+    maybe_star_pattern = token::ENUM_NAME::maybe_star_pattern |
+                         flag::Type::GROUP,                            //
+    name_or_attr = token::ENUM_NAME::name_or_attr | flag::Type::GROUP, //
+    named_expression = token::ENUM_NAME::named_expression |
+                       flag::Type::GROUP,                                //
+    nonlocal_stmt = token::ENUM_NAME::nonlocal_stmt | flag::Type::GROUP, //
+    noteq_bitwise_or = token::ENUM_NAME::noteq_bitwise_or |
+                       flag::Type::GROUP, //
+    notin_bitwise_or = token::ENUM_NAME::notin_bitwise_or |
+                       flag::Type::GROUP, //
+    open_sequence_pattern = token::ENUM_NAME::open_sequence_pattern |
+                            flag::Type::GROUP,                     //
+    or_pattern = token::ENUM_NAME::or_pattern | flag::Type::GROUP, //
+    param = token::ENUM_NAME::param | flag::Type::GROUP,           //
+    param_maybe_default = token::ENUM_NAME::param_maybe_default |
+                          flag::Type::GROUP, //
+    param_no_default = token::ENUM_NAME::param_no_default |
+                       flag::Type::GROUP, //
+    param_no_default_star_annotation =
+        token::ENUM_NAME::param_no_default_star_annotation |
+        flag::Type::GROUP, //
+    param_star_annotation = token::ENUM_NAME::param_star_annotation |
+                            flag::Type::GROUP, //
+    param_with_default = token::ENUM_NAME::param_with_default |
+                         flag::Type::GROUP,                        //
+    parameters = token::ENUM_NAME::parameters | flag::Type::GROUP, //
+    params = token::ENUM_NAME::params | flag::Type::GROUP,         //
+    pattern = token::ENUM_NAME::pattern | flag::Type::GROUP,       //
+    pattern_capture_target = token::ENUM_NAME::pattern_capture_target |
+                             flag::Type::GROUP,                //
+    patterns = token::ENUM_NAME::patterns | flag::Type::GROUP, //
+    positional_patterns = token::ENUM_NAME::positional_patterns |
+                          flag::Type::GROUP,                         //
+    power = token::ENUM_NAME::power | flag::Type::GROUP,             //
+    primary = token::ENUM_NAME::primary | flag::Type::GROUP,         //
+    raise_stmt = token::ENUM_NAME::raise_stmt | flag::Type::GROUP,   //
+    real_number = token::ENUM_NAME::real_number | flag::Type::GROUP, //
+    return_stmt = token::ENUM_NAME::return_stmt | flag::Type::GROUP, //
+    sequence_pattern = token::ENUM_NAME::sequence_pattern |
+                       flag::Type::GROUP,                                //
+    set = token::ENUM_NAME::set | flag::Type::GROUP,                     //
+    setcomp = token::ENUM_NAME::setcomp | flag::Type::GROUP,             //
+    shift_expr = token::ENUM_NAME::shift_expr | flag::Type::GROUP,       //
+    signed_number = token::ENUM_NAME::signed_number | flag::Type::GROUP, //
+    signed_real_number = token::ENUM_NAME::signed_real_number |
+                         flag::Type::GROUP,                            //
+    simple_stmt = token::ENUM_NAME::simple_stmt | flag::Type::GROUP,   //
+    simple_stmts = token::ENUM_NAME::simple_stmts | flag::Type::GROUP, //
+    single_subscript_attribute_target =
+        token::ENUM_NAME::single_subscript_attribute_target |
+        flag::Type::GROUP,                                               //
+    single_target = token::ENUM_NAME::single_target | flag::Type::GROUP, //
+    slash_no_default = token::ENUM_NAME::slash_no_default |
+                       flag::Type::GROUP, //
+    slash_with_default = token::ENUM_NAME::slash_with_default |
+                         flag::Type::GROUP,                                  //
+    slice = token::ENUM_NAME::slice | flag::Type::GROUP,                     //
+    slices = token::ENUM_NAME::slices | flag::Type::GROUP,                   //
+    star_annotation = token::ENUM_NAME::star_annotation | flag::Type::GROUP, //
+    star_atom = token::ENUM_NAME::star_atom | flag::Type::GROUP,             //
+    star_etc = token::ENUM_NAME::star_etc | flag::Type::GROUP,               //
+    star_expression = token::ENUM_NAME::star_expression | flag::Type::GROUP, //
+    star_expressions = token::ENUM_NAME::star_expressions |
+                       flag::Type::GROUP, //
+    star_named_expression = token::ENUM_NAME::star_named_expression |
+                            flag::Type::GROUP, //
+    star_named_expressions = token::ENUM_NAME::star_named_expressions |
+                             flag::Type::GROUP,                        //
+    star_pattern = token::ENUM_NAME::star_pattern | flag::Type::GROUP, //
+    star_target = token::ENUM_NAME::star_target | flag::Type::GROUP,   //
+    star_targets = token::ENUM_NAME::star_targets | flag::Type::GROUP, //
+    star_targets_list_seq = token::ENUM_NAME::star_targets_list_seq |
+                            flag::Type::GROUP, //
+    star_targets_tuple_seq = token::ENUM_NAME::star_targets_tuple_seq |
+                             flag::Type::GROUP, //
+    starred_expression = token::ENUM_NAME::starred_expression |
+                         flag::Type::GROUP,                      //
+    statement = token::ENUM_NAME::statement | flag::Type::GROUP, //
+    statement_newline = token::ENUM_NAME::statement_newline |
+                        flag::Type::GROUP,                             //
+    statements = token::ENUM_NAME::statements | flag::Type::GROUP,     //
+    string = token::ENUM_NAME::string | flag::Type::GROUP,             //
+    strings = token::ENUM_NAME::strings | flag::Type::GROUP,           //
+    subject_expr = token::ENUM_NAME::subject_expr | flag::Type::GROUP, //
+    sum = token::ENUM_NAME::sum | flag::Type::GROUP,                   //
+    t_lookahead = token::ENUM_NAME::t_lookahead | flag::Type::GROUP,   //
+    t_primary = token::ENUM_NAME::t_primary | flag::Type::GROUP,       //
+    target_with_star_atom = token::ENUM_NAME::target_with_star_atom |
+                            flag::Type::GROUP,                     //
+    term = token::ENUM_NAME::term | flag::Type::GROUP,             //
+    try_stmt = token::ENUM_NAME::try_stmt | flag::Type::GROUP,     //
+    tuple = token::ENUM_NAME::tuple | flag::Type::GROUP,           //
+    type_alias = token::ENUM_NAME::type_alias | flag::Type::GROUP, //
+    type_expressions = token::ENUM_NAME::type_expressions |
+                       flag::Type::GROUP,                          //
+    type_param = token::ENUM_NAME::type_param | flag::Type::GROUP, //
+    type_param_bound = token::ENUM_NAME::type_param_bound |
+                       flag::Type::GROUP,                                  //
+    type_param_seq = token::ENUM_NAME::type_param_seq | flag::Type::GROUP, //
+    type_params = token::ENUM_NAME::type_params | flag::Type::GROUP,       //
+    value_pattern = token::ENUM_NAME::value_pattern | flag::Type::GROUP,   //
+    while_stmt = token::ENUM_NAME::while_stmt | flag::Type::GROUP,         //
+    wildcard_pattern = token::ENUM_NAME::wildcard_pattern |
+                       flag::Type::GROUP,                          //
+    with_item = token::ENUM_NAME::with_item | flag::Type::GROUP,   //
+    with_stmt = token::ENUM_NAME::with_stmt | flag::Type::GROUP,   //
+    yield_expr = token::ENUM_NAME::yield_expr | flag::Type::GROUP, //
+    yield_stmt = token::ENUM_NAME::yield_stmt | flag::Type::GROUP)
 #undef ENUM_NAME
 
 } // namespace flag
