@@ -56,7 +56,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib")
 
 # find a boost install with the libraries filesystem and system
 SET(Boost_USE_STATIC_LIBS OFF)
-find_package(Boost 1.74 REQUIRED
+find_package(Boost 1.85 REQUIRED
         COMPONENTS
         program_options
         log log_setup
@@ -85,17 +85,6 @@ else ()
     message(FATAL_ERROR "Cannot find Boost")
 endif ()
 
-#Git outputs a ugly message when downloading the release version of
-execute_process(
-        COMMAND git config --global --get advice.detachedHead
-        OUTPUT_VARIABLE advice-detachedHead-bool
-)
-
-execute_process(
-        COMMAND git config --global advice.detachedHead false
-)
-
-message(STATUS "Fetching dependencies")
 
 set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
@@ -109,17 +98,6 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(ctre)
 
 include_directories("${ctre_SOURCE_DIR}/single-header")
-
-if (advice-detachedHead MATCHES "(true)|(false)")
-    execute_process(
-            COMMAND git config --global advice.detachedHead "${advice-detachedHead-bool}"
-    )
-else ()
-    execute_process(
-            COMMAND git config --global --unset advice.detachedHead
-    )
-endif ()
-
 
 # Add an executable with the above sources
 add_executable(${PROJECT_NAME}
