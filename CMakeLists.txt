@@ -104,7 +104,6 @@ add_executable(${PROJECT_NAME}
         src/main.cpp
         src/global.cpp
         src/turtle.cpp
-        src/langs/python/lexicalize.cpp
         src/langs/antlr/lexicalize.cpp
 )
 
