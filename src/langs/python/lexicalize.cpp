@@ -146,10 +146,10 @@ void lexicalize(std::string &filedata,
          flag == turtle::token::flag::Type::DELIMITERS) &&
         str.length() <= 8) {
       auto it =
-          std::find_if(turtle::turtleBuiltinTokenMap.begin(),
-                       turtle::turtleBuiltinTokenMap.end(),
+          std::find_if(turtleBuiltinTokenMap.begin(),
+                       turtleBuiltinTokenMap.end(),
                        [&](const auto &pair) { return str == pair.first; });
-      if (it != turtle::turtleBuiltinTokenMap.end()) {
+      if (it != turtleBuiltinTokenMap.end()) {
         flag = it->second;
       } else if (!(flag == turtle::token::flag::Type::IDENTIFIER)) {
         std::cerr << "Unknown operator " << str << std::endl;
