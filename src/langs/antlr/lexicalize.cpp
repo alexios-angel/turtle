@@ -15,74 +15,64 @@
 #include <vector>
 
 namespace turtle::langs::antlr {
-// clang-format off
-/*
-Paste into regex101.com
-Replace regex comments with )"${2}R"( by using (\(\?#([^)]*)\))|^
 
-(?<comment>#[^\r\n]*)|(?#                                 //capture comments
-)(?<string>(?<string_type>[a-zA-Z]{1,2})?(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"']|\\.|\\)*\g{complete_quotes})?)|(?#
-                                                           //capture strings
-                                                           // prefix is valid and the string terminates
-)(?<newline>[\n\r](?<indent>[ \t]{1,})?)|(?#                              //capture newlines
-)(?<backslash>\\[^\r\n]*)|(?#                              //capture \TheBackslashAndAnythingAfterIt
-)(?<arithmetic>(?#
-    )(?:[!%&*+\-<=>@\/\\^|:]=?)|(?#                        //capture 1 character operators
-    )(?:[<>*\/]{1,2}=?)(?#                                 //capture 2-3 character operators
-))|(?<number>(?#
-                                                           //fucking floating point numbers
-    )(?:\d[\d_]*\.[\d_]*\d[\d_]*[eE]-?[\d_]*)|(?#          //capture exponential floating point literals
-    )(?:\d[\d_]*\.[\d_]*\d[\d_]*[\w]*)|(?#                 //capture floating point literals -> \d.\d [suffix]
-    )(?:\d[\d_]*\.[eE]-?[\d_]*)|(?#                        //capture exponential floating point literals
-    )(?:\d[\d_]*\.\w*)|(?#                                 //capture floating point literals -> \d.   [suffix]
-    )(?:\.\d[\d_]*[eE]-?[\d_]*)|(?#                        //capture exponential floating point literals
-    )(?:\.\d[\d_]*\w*)|(?#                                 //capture floating point literals ->   .\d [suffix]
-    )(?:\d[\d_]*[eE]-?[\d_]*)|(?#                            //capture exponential literals
-    )(?:\d+)(?#
-))|(?#
-)(?<deliminar>(?#
-    )\.{2}|(?#                                              //capture ...
-    )(?:->)|(?#                                                 //capture ->
-    )[!-\/:-@\[-^{-~](?#
-))|(?#
-)(?<identifier>[^\s!-\/:-@\[-^{-~]+)|(?#               //capture anything else
-)(?<whitespace>\s+)(?#                                                     //capture whitespace in order to keep track of position with ctre)
-*/
-        // clang-format off
-        //when rEgEX is A LaNGUAgE
-        static constexpr ctll::fixed_string LexRegex {
-            R"((?<comment>#[^\r\n]*)|)"                                           //capture comments
-            R"((?<string>(?<string_type>[a-zA-Z]{1,2})?(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"']|\\.|\\)*\g{complete_quotes})?)|)"
-                                                                      //capture strings
-                                                                      //                  prefix is valid and the string terminates
-            R"((?<newline>[\n\r](?<indent>[ \t]{1,})?)|)"                                        //capture newlines
-            R"((?<backslash>\\[^\r\n]*)|)"                                          //capture \TheBackslashAndAnythingAfterIt
-            R"((?<arithmetic>)"
-                R"((?:[!%&*+\-<=>@\/\\^|:]=?)|)"                            //capture 1 character operators
-                R"((?:[<>*\/]{1,2}=?))"                                    //capture 2-3 character operators
-            R"()|(?<number>)"
-                                                                      //fucking floating point numbers
-                R"((?:\d[\d_]*\.[\d_]*\d[\d_]*[eE]-?[\d_]*)|)"            //capture exponential floating point literals
-                R"((?:\d[\d_]*\.[\d_]*\d[\d_]*[\w]*)|)"                   //capture floating point literals -> \d.\d [suffix]
-                R"((?:\d[\d_]*\.[eE]-?[\d_]*)|)"                          //capture exponential floating point literals
-                R"((?:\d[\d_]*\.\w*)|)"                                   //capture floating point literals -> \d.   [suffix]
-                R"((?:\.\d[\d_]*[eE]-?[\d_]*)|)"                          //capture exponential floating point literals
-                R"((?:\.\d[\d_]*\w*)|)"                                   //capture floating point literals ->   .\d [suffix]
+template<typename T, std::size_t items>
+constexpr auto join_matches_as_array(const auto& range){
+    std::array<T, items> result{};
+    std::size_t i = 0;
+    for (const auto &m : range) {
+        std::copy(m.begin(), m.end(), result.begin()+i);
+        i += m.size();
+    }
+    return result;
+}
 
-                R"((?:\d[\d_]*[eE]-?[\d_]*)|)"                            //capture exponential literals
-                R"((?:\d+))"
-            R"()|)"
-            R"((?<delimiter>)"
-                R"(\.{2}|)"                                              //capture ...
-                R"((?:->)|)"                                                 //capture ->
-                R"([!-\/:-@\[-^{-~])"
-            R"()|)"
-            R"((?<identifier>[^\s!-\/:-@\[-^{-~]+)|)"               //capture anything else
-            R"((?<whitespace>\s+))"                                                     //capture whitespace in order to keep track of position with ctreR"(
-        };
-// clang-format on
+constexpr auto accumulate_match_sizes(const auto& range){
+    std::size_t res = 0;
+    for (const auto match : range) {
+        res += match.size();
+    }
+    return res;
+}
+
 void lexicalize(std::string &filedata,
                 turtle::turtle_vector<turtle::node_t> &lexemes) {
+
+
+  constexpr std::string_view inital_regex =
+    R"((?<comment>#[^\r\n]*)|(?#                                 //capture comments
+    )(?<string>(?<string_type>[a-zA-Z]{1,2})?(?<complete_quotes>(?<quote_type>"|')(\g{quote_type}{2})?)(?:(?:[^\\"']|\\.|\\)*\g{complete_quotes})?)|(?#
+                                                                //capture strings
+                                                                // prefix is valid and the string terminates
+    )(?<newline>[\n\r](?<indent>[ \t]{1,})?)|(?#                //capture newlines
+    )(?<backslash>\\[^\r\n]*)|(?#                               //capture \TheBackslashAndAnythingAfterIt
+    )(?<arithmetic>(?#
+        )(?:[!%&*+\-<=>@\/\\^|:]=?)|(?#                         //capture 1 character operators
+        )(?:[<>*\/]{1,2}=?)(?#                                  //capture 2-3 character operators
+    ))|(?<number>(?#
+                                                                //fucking floating point numbers
+        )(?:\d[\d_]*\.[\d_]*\d[\d_]*[eE]-?[\d_]*)|(?#           //capture exponential floating point literals
+        )(?:\d[\d_]*\.[\d_]*\d[\d_]*[\w]*)|(?#                  //capture floating point literals -> \d.\d [suffix]
+        )(?:\d[\d_]*\.[eE]-?[\d_]*)|(?#                         //capture exponential floating point literals
+        )(?:\d[\d_]*\.\w*)|(?#                                  //capture floating point literals -> \d.   [suffix]
+        )(?:\.\d[\d_]*[eE]-?[\d_]*)|(?#                         //capture exponential floating point literals
+        )(?:\.\d[\d_]*\w*)|(?#                                  //capture floating point literals ->   .\d [suffix]
+        )(?:\d[\d_]*[eE]-?[\d_]*)|(?#                           //capture exponential literals
+        )(?:\d+)(?#
+    ))|(?#
+    )(?<delimiter>(?#
+        )\.{2}|(?#                                              //capture ...
+        )(?:->)|(?#                                             //capture ->
+        )[!-\/:-@\[-^{-~](?#
+    ))|(?#
+    )(?<identifier>[^\s!-\/:-@\[-^{-~]+)|(?#                    //capture anything else
+    )(?<whitespace>\s+)(?#                                      //capture whitespace in order to keep track of position with ctre
+  ))";
+
+  constexpr auto parts_of_regex = ctre::split<R"(\(\?#[^)]*\))">(inital_regex);
+
+  constexpr std::size_t total_size_of_all_matches = accumulate_match_sizes(parts_of_regex);
+  constexpr auto LexRegex = join_matches_as_array<char, total_size_of_all_matches>(parts_of_regex);
 
   const auto &matches = ctre::tokenize<LexRegex>(filedata);
   // std::distance is not constexpr thus it does not work with ctre
