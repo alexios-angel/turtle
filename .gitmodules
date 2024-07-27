@@ -1,6 +1,3 @@
-[submodule "resources/grammars-v4"]
-	path = resources/grammars-v4
-	url = https://github.com/antlr/grammars-v4
 [submodule "cmake/ucm"]
 	path = cmake/ucm
 	url = https://github.com/onqtam/ucm
