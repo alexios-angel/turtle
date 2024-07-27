@@ -7,3 +7,6 @@
 [submodule "include/json"]
 	path = include/json
 	url = https://github.com/nlohmann/json
+[submodule "resources/grammars-v4"]
+	path = resources/grammars-v4
+	url = https://github.com/antlr/grammars-v4
