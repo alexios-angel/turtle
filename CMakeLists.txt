@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.30.0)
-include(FetchContent)
 
 project(turtle VERSION 1.0)
 set(PROJECT_DESCRIPTION "My Python -> C++ Transcompiler")
-set(PROJECT_MAINTAINER_GIT_USERNAME "angeletakis")
+set(PROJECT_MAINTAINER_GIT_USERNAME "alexios-angel")
 set(PROJECT_MAINTAINER_NAME "Alexios Angel")
 
 set (CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 include(cotire/CMake/cotire)
 include(ucm/cmake/ucm)
+include(FetchContent)
 
 #file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/include")
 #file(MAKE_DIRECTORY "${PROJECT_SOURCE_DIR}/src")
@@ -90,7 +90,7 @@ set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(
         ctre
         GIT_REPOSITORY https://github.com/hanickadot/compile-time-regular-expressions.git
-        GIT_TAG eb9577aae3515d14e6c5564f9aeb046d2e7c1124
+        GIT_TAG 129d535e7c24fb42285c74a2cc14efc7b222758a
         GIT_PROGRESS TRUE
         USES_TERMINAL_DOWNLOAD TRUE
 )
