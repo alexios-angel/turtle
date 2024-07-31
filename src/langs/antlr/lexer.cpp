@@ -1,7 +1,7 @@
 //
 // Created by alex on 11/11/21.
 //
-#include "langs/antlr/lexicalize.hpp"
+#include "langs/antlr/lexer.hpp"
 #include "boost/foreach.hpp"
 #include "ctre.hpp"
 #include "global.hpp"

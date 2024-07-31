@@ -5,7 +5,7 @@
 
 #include "boost/program_options.hpp"
 #include "global.hpp"
-#include "langs/antlr/lexicalize.hpp"
+#include "langs/antlr/lexer.hpp"
 #include "node.hpp"
 
 int turtle_main(const boost::program_options::variables_map vm) {

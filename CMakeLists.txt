@@ -104,7 +104,7 @@ add_executable(${PROJECT_NAME}
         src/main.cpp
         src/global.cpp
         src/turtle.cpp
-        src/langs/antlr/lexicalize.cpp
+        src/langs/antlr/lexer.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${Threads_LIBRARIES} ${Backtrace_LIBRARIES})
