@@ -23,7 +23,7 @@ pip install cmake # To install the latest CMake; The apt repo is old
 Clone the repository and build the project using CMake:
 
 ```Bash
-git clone https://github.com/alexios-angel/turtle
+git clone --recurse-submodules https://github.com/alexios-angel/turtle
 cd turtle
 cmake . -D CMAKE_C_COMPILER=clang -D CMAKE_CXX_COMPILER=clang++
 # If you would like to use the Mold linker
